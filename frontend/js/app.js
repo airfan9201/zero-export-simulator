@@ -38,6 +38,20 @@ async function updateSimulation() {
 
         document.getElementById("curtailment").innerText =
             result.curtailed_power.toFixed(2);
+			
+			
+		//sprint 3.1
+		document.getElementById("flow-pv").innerText =
+			result.available_pv_power.toFixed(2);
+
+		document.getElementById("flow-inverter").innerText =
+			result.actual_pv_output.toFixed(2);
+
+		document.getElementById("flow-load").innerText =
+			result.load.toFixed(2);
+
+		document.getElementById("flow-grid").innerText =
+			result.export.toFixed(2);
 
     }
     catch(error){
