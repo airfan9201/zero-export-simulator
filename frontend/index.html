@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Zero Export Simulator</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+    <header class="header">
+
+        <h1>ZERO EXPORT SIMULATOR</h1>
+
+        <p>Professional Zero Export Control Training Platform</p>
+
+    </header>
+
+
+    <main class="container">
+
+        <!-- ================= INPUT ================= -->
+
+        <section class="panel">
+
+            <h2>Simulation Input</h2>
+
+			<div id="input-panel">
+
+				<!-- DC Capacity -->
+
+				<div class="input-group">
+
+					<label for="dc-capacity">
+
+						DC Capacity (kWp)
+
+					</label>
+
+					<input
+						type="number"
+						id="dc-capacity"
+						value="23699"
+						min="1">
+
+				</div>
+
+
+				<!-- Irradiance -->
+
+				<div class="input-group">
+
+					<label>
+
+						Irradiance
+
+					</label>
+
+					<input
+						type="range"
+						id="irradiance"
+						min="0"
+						max="1200"
+						value="900">
+
+					<div class="slider-value">
+
+						<span id="irradiance-value">
+
+							900
+
+						</span>
+
+						W/m²
+
+					</div>
+
+				</div>
+
+
+				<!-- Temperature -->
+
+				<div class="input-group">
+
+					<label>
+
+						Module Temperature
+
+					</label>
+
+					<input
+						type="range"
+						id="temperature"
+						min="0"
+						max="80"
+						value="30">
+
+					<div class="slider-value">
+
+						<span id="temperature-value">
+
+							30
+
+						</span>
+
+						°C
+
+					</div>
+
+				</div>
+
+
+				<!-- Factory Load -->
+
+				<div class="input-group">
+
+					<label>
+
+						Factory Load
+
+					</label>
+
+					<input
+						type="range"
+						id="factory-load-slider"
+						min="0"
+						max="25000"
+						value="500">
+
+					<div class="slider-value">
+
+						<span id="factory-load-value">
+
+							500
+
+						</span>
+
+						kW
+
+					</div>
+
+				</div>
+
+			</div>			
+
+        </section>
+
+
+        <!-- ================= RESULT ================= -->
+
+        <section class="panel">
+
+            <h2>Simulation Result</h2>
+
+            <div class="result-grid">
+
+                <div class="result-card">
+
+                    <div class="card-title">
+                        Available PV
+                    </div>
+
+                    <div class="card-value" id="available-pv">
+                        0.00
+                    </div>
+
+                    <div class="card-unit">
+                        kW
+                    </div>
+
+                </div>
+
+
+                <div class="result-card">
+
+                    <div class="card-title">
+                        Actual PV
+                    </div>
+
+                    <div class="card-value" id="actual-pv">
+                        0.00
+                    </div>
+
+                    <div class="card-unit">
+                        kW
+                    </div>
+
+                </div>
+
+
+                <div class="result-card">
+
+                    <div class="card-title">
+                        Factory Load
+                    </div>
+
+                    <div class="card-value" id="factory-load">
+                        0.00
+                    </div>
+
+                    <div class="card-unit">
+                        kW
+                    </div>
+
+                </div>
+
+
+                <div class="result-card">
+
+                    <div class="card-title">
+                        Export
+                    </div>
+
+                    <div class="card-value" id="export">
+                        0.00
+                    </div>
+
+                    <div class="card-unit">
+                        kW
+                    </div>
+
+                </div>
+
+
+                <div class="result-card">
+
+                    <div class="card-title">
+                        Import
+                    </div>
+
+                    <div class="card-value" id="import">
+                        0.00
+                    </div>
+
+                    <div class="card-unit">
+                        kW
+                    </div>
+
+                </div>
+
+
+                <div class="result-card">
+
+                    <div class="card-title">
+                        Curtailment
+                    </div>
+
+                    <div class="card-value" id="curtailment">
+                        0.00
+                    </div>
+
+                    <div class="card-unit">
+                        kW
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= CONTROLLER ================= -->
+
+        <section class="panel">
+
+            <h2>Controller Status</h2>
+
+            <div class="status status-ok">
+
+                ZERO EXPORT ACTIVE
+
+            </div>
+
+        </section>
+		
+		<section class="panel">
+
+			<h2>System Status</h2>
+
+			<div class="status-bar">
+
+				<div>
+
+					Backend
+
+					<span id="connection-status" class="status status-ok">
+						Connected
+					</span>
+
+				</div>
+
+				<div>
+
+					Response Time :
+
+					<span id="response-time">
+						0 ms
+					</span>
+
+				</div>
+
+				<div>
+
+					Last Update :
+
+					<span id="last-update">
+						--
+					</span>
+
+				</div>
+
+				<div>
+
+					Version :
+
+					<span>
+						v0.1.0
+					</span>
+
+				</div>
+
+			</div>
+
+		</section>		
+
+    </main>
+
+    <script src="js/app.js"></script>
+
+</body>
+
+</html>
