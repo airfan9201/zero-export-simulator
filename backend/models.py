@@ -11,7 +11,9 @@ class SimulationInput:
     
 @dataclass
 class SimulationOutput:
-    pv_power: float
+
+    available_pv_power: float
+    actual_pv_output: float
     load: float
     export: float
     import_power: float

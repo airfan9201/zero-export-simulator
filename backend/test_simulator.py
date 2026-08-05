@@ -1,8 +1,9 @@
 from simulator import Simulator
+from controller import ZeroExportController
 from models import SimulationInput
 
-
 simulator = Simulator()
+controller = ZeroExportController()
 
 data = SimulationInput(
     dc_capacity=1000,
@@ -12,6 +13,14 @@ data = SimulationInput(
     inverter_efficiency=98
 )
 
-result = simulator.run(data)
+raw_result = simulator.run(data)
 
-print(result)
+final_result = controller.apply(raw_result)
+
+print("Raw Result")
+print(raw_result)
+
+print()
+
+print("Controlled Result")
+print(final_result)
