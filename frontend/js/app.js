@@ -17,11 +17,15 @@ async function updateSimulation() {
 		const result = await response.json();
 		const elapsed = performance.now() - start;
 		
+		const status = document.getElementById("connection-status");
+
 		document.getElementById("response-time").innerText = elapsed.toFixed(1) + " ms";
 
 		document.getElementById("last-update").innerText =	new Date().toLocaleTimeString();
 
-		document.getElementById("connection-status").innerText = "Connected";
+		status.innerText = "Connected";
+		status.className = "status status-ok";
+		
 
         document.getElementById("available-pv").innerText =
             result.available_pv_power.toFixed(2);
@@ -132,9 +136,12 @@ function updateAssessment(result){
         title.innerText =
             "🟢 Zero Export Active";
 
-        description.innerText =
-            "The Zero Export Controller is limiting the inverter output to prevent power export to the utility grid.";
-
+     description.innerHTML = `
+		<li>Available PV exceeds factory load.</li>
+		<li>Controller limits inverter output.</li>
+		<li>No power is exported to the utility grid.</li>
+		<li>System operating as expected.</li>
+	`;
     }
 
     else{

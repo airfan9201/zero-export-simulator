@@ -510,7 +510,7 @@ body{
 
     background:#303134;
 
-    border-left:6px solid #4CAF50;
+    /*border-left:6px solid #4CAF50;*/
 
     border-radius:8px;
 
@@ -528,4 +528,12 @@ body{
 
     line-height:1.6;
 
+}
+
+.assumption-card ul{
+
+    margin-top:15px;
+    padding-left:25px;
+	margin-bottom:15px;
+	
 }
