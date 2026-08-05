@@ -41,6 +41,8 @@ async function updateSimulation() {
         document.getElementById("curtailment").innerText =
             result.curtailed_power.toFixed(2);
 			
+		// Tambah ini
+		updateAssessment(result);			
 			
 		//sprint 3.1
 		/*document.getElementById("flow-pv").innerText =
@@ -117,10 +119,39 @@ function initializeInputPanel() {
 
 }
 
+function updateAssessment(result){
+
+    const title =
+        document.getElementById("assessment-title");
+
+    const description =
+        document.getElementById("assessment-description");
+
+    if(result.curtailed_power > 0){
+
+        title.innerText =
+            "🟢 Zero Export Active";
+
+        description.innerText =
+            "The Zero Export Controller is limiting the inverter output to prevent power export to the utility grid.";
+
+    }
+
+    else{
+
+        title.innerText =
+            "🟢 PV Limited By Availability";
+
+        description.innerText =
+            "The PV system is operating at its maximum available output. Additional factory demand is supplied by the utility grid.";
+
+    }
+
+}
+
 document.addEventListener("DOMContentLoaded", () => {
 
     initializeInputPanel();
-
     updateSimulation();
 
 });

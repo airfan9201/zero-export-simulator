@@ -501,3 +501,31 @@ body{
     font-family:Consolas, monospace;
 
 }
+
+/* ==========================================
+   Simulation Assessment
+========================================== */
+
+.assessment-card{
+
+    background:#303134;
+
+    border-left:6px solid #4CAF50;
+
+    border-radius:8px;
+
+    padding:20px;
+
+}
+
+.assessment-card h3{
+
+    margin-bottom:12px;
+
+}
+
+.assessment-card p{
+
+    line-height:1.6;
+
+}
