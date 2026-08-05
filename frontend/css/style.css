@@ -1,3 +1,23 @@
+:root{
+
+    --primary:#00E676;
+
+    --primary-dark:#00C853;
+
+    --panel:#2D2D30;
+
+    --card:#303134;
+
+    --border:#4A4A4A;
+
+    --text:#DDDDDD;
+
+    --text-secondary:#AAAAAA;
+
+    --background:#1E1E1E;
+
+}
+
 *{
 
     margin:0;
@@ -8,7 +28,7 @@
 
 body{
 
-    background:#1E1E1E;
+    background:var(--background);
 
     color:white;
 
@@ -26,7 +46,7 @@ body{
 
     text-align:center;
 
-    border-bottom:3px solid #00C853;
+    border-bottom:3px solid var(--primary-dark);
 
 }
 
@@ -64,7 +84,7 @@ body{
 
 .panel{
 
-    background:#2D2D30;
+    background:var(--panel);
 
     margin-bottom:25px;
 
@@ -72,7 +92,7 @@ body{
 
     padding:20px;
 
-    border-left:6px solid #00C853;
+    border-left:6px solid var(--primary-dark);
 
 }
 
@@ -80,7 +100,7 @@ body{
 
     margin-bottom:20px;
 
-    color:#00E676;
+    color:var(--primary);
 
 }
 
@@ -110,7 +130,7 @@ body{
 
     transition:.25s;
 
-    border:1px solid #4A4A4A;
+    border:1px solid var(--border);
 
 }
 
@@ -118,7 +138,7 @@ body{
 
     transform:translateY(-3px);
 
-    border-color:#00C853;
+    border-color:var(--primary-dark);
 
 }
 
@@ -142,7 +162,7 @@ body{
 
     margin-top:15px;
 
-    color:#00E676;
+    color:var(--primary);
 
 }
 
@@ -152,7 +172,7 @@ body{
 
     margin-top:10px;
 
-    color:#AAAAAA;
+    color:var(--text-secondary);
 
     font-size:15px;
 
@@ -174,7 +194,7 @@ body{
 
 .status-ok{
 
-    background:#00C853;
+    background:var(--primary-dark);
 
     color:white;
 
@@ -220,7 +240,7 @@ body{
 
 .status-bar div{
 
-    color:#DDDDDD;
+    color:var(--text);
 
 }
 
@@ -246,7 +266,7 @@ body{
 
     margin-bottom:10px;
 
-    color:#DDDDDD;
+    color:var(--text);
 
     font-weight:bold;
 
@@ -284,135 +304,11 @@ body{
 
     font-size:18px;
 
-    color:#00E676;
+    color:var(--primary);
 
 }
 
 /* ================= POWER FLOW ================= */
-
-.power-flow{
-
-    display:flex;
-
-    flex-direction:column;
-
-    align-items:center;
-
-}
-
-.power-row{
-
-    display:flex;
-
-    gap:80px;
-
-    margin-top:20px;
-
-}
-
-.power-node{
-
-    width:180px;
-
-    background:#3A3A3D;
-
-    border-radius:10px;
-
-    padding:20px;
-
-    text-align:center;
-
-    border:1px solid #4A4A4A;
-
-}
-
-.node-title{
-
-    color:#CCCCCC;
-
-    font-size:18px;
-
-}
-
-.node-value{
-
-    margin-top:15px;
-
-    font-size:36px;
-
-    font-weight:bold;
-
-    color:#00E676;
-
-}
-
-.node-unit{
-
-    margin-top:10px;
-
-    color:#AAAAAA;
-
-}
-
-.arrow{
-
-    font-size:40px;
-
-    margin:15px 0;
-
-    color:#00E676;
-
-}
-
-.power-split{
-
-    display:flex;
-
-    align-items:center;
-
-    margin-top:20px;
-
-}
-
-.horizontal-line{
-
-    width:120px;
-
-    height:4px;
-
-    background:#00E676;
-
-}
-
-.split-right{
-
-    display:flex;
-
-    flex-direction:column;
-
-    align-items:center;
-
-}
-
-.vertical-up{
-
-    width:4px;
-
-    height:40px;
-
-    background:#00E676;
-
-}
-
-.vertical-down{
-
-    width:4px;
-
-    height:40px;
-
-    background:#00E676;
-
-}
 
 .hideDisplay {
 	display:none;
@@ -434,19 +330,20 @@ body{
 
 .explanation-card{
 
-    background:#303134;
+    background:var(--card);
 
-    border:1px solid #4A4A4A;
+    border:1px solid var(--border);
 
     border-radius:10px;
 
     padding:20px;
+	transition:.25s;
 
 }
 
 .explanation-card h3{
 
-    color:#00E676;
+    color:var(--primary);
 
     margin-bottom:15px;
 
@@ -464,7 +361,7 @@ body{
 
 .explanation-card p{
 
-    color:#DDDDDD;
+    color:var(--text);
 
     line-height:1.6;
 
@@ -490,7 +387,7 @@ body{
 
     padding:12px;
 
-    background:#1E1E1E;
+    background:var(--background);
 
     color:#7CFF8F;
 
@@ -502,17 +399,23 @@ body{
 
 }
 
+.explanation-card:hover{
+
+    transform:translateY(-3px);
+
+    border-color:var(--primary-dark);
+
+}
+
 /* ==========================================
    Simulation Assessment
 ========================================== */
 
 .assessment-card{
 
-    background:#303134;
+    background:var(--card);
 
-    /*border-left:6px solid #4CAF50;*/
-
-    border-radius:8px;
+    border-radius:10px;
 
     padding:20px;
 
