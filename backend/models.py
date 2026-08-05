@@ -8,7 +8,7 @@ class SimulationInput:
     temperature: float
     load: float
     inverter_efficiency: float
-    deadband: float = 0
+    offset: float = 0
     
 @dataclass
 class SimulationOutput:

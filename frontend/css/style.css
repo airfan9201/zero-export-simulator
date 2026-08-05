@@ -417,3 +417,87 @@ body{
 .hideDisplay {
 	display:none;
 }
+
+/* ==========================================
+   Simulation Explanation
+========================================== */
+
+.explanation-container{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+
+    gap:20px;
+
+}
+
+.explanation-card{
+
+    background:#303134;
+
+    border:1px solid #4A4A4A;
+
+    border-radius:10px;
+
+    padding:20px;
+
+}
+
+.explanation-card h3{
+
+    color:#00E676;
+
+    margin-bottom:15px;
+
+}
+
+.explanation-card h4{
+
+    margin-top:18px;
+
+    margin-bottom:8px;
+
+    color:#FFD54F;
+
+}
+
+.explanation-card p{
+
+    color:#DDDDDD;
+
+    line-height:1.6;
+
+}
+
+.explanation-card ul{
+
+    padding-left:20px;
+
+}
+
+.explanation-card li{
+
+    margin-bottom:5px;
+
+}
+
+.explanation-card code{
+
+    display:block;
+
+    margin-top:10px;
+
+    padding:12px;
+
+    background:#1E1E1E;
+
+    color:#7CFF8F;
+
+    border-radius:6px;
+
+    white-space:pre-line;
+
+    font-family:Consolas, monospace;
+
+}

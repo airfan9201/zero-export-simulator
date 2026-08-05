@@ -24,6 +24,58 @@
 
 
     <main class="container">
+	
+	<!-- ================= BACKEND STATUS ================= -->
+	
+		<section class="panel">
+
+			<h2>System Status</h2>
+
+			<div class="status-bar">
+
+				<div>
+
+					Backend
+
+					<span id="connection-status" class="status status-ok">
+						Connected
+					</span>
+
+				</div>
+
+				<div>
+
+					Response Time :
+
+					<span id="response-time">
+						0 ms
+					</span>
+
+				</div>
+
+				<div>
+
+					Last Update :
+
+					<span id="last-update">
+						--
+					</span>
+
+				</div>
+
+				<div>
+
+					Version :
+
+					<span>
+						v0.1.0
+					</span>
+
+				</div>
+
+			</div>
+
+		</section>		
 
         <!-- ================= INPUT ================= -->
 
@@ -148,16 +200,16 @@
 				</div>
 
 			
-				<!-- Deadband-->
+				<!-- offset-->
 				<div class="input-group">
 
-					<label for="deadband">
-						Deadband (kW)
+					<label for="offset">
+						offset (kW)
 					</label>
 
 					<input
 						type="number"
-						id="deadband"
+						id="offset"
 						value="0"
 						min="0"
 						step="1">
@@ -283,7 +335,268 @@
         </section>
 
 
+		<section class="panel">
 
+		<h2>Engineering Calculation Reference</h2>
+
+		<div class="assumption-card">
+
+			<h3>Simulation Assumptions</h3>
+
+			<p>
+				The following engineering assumptions are applied throughout the simulator.
+			</p>
+
+			<ul>
+				<li>Zero Export Controller : Enabled</li>
+				<li>Utility Grid : Available</li>
+				<li>Inverter Efficiency : 98 %</li>
+				<li>Temperature Coefficient : -0.4 % / °C</li>
+				<li>PV Reference Temperature (STC) : 25°C</li>
+				<li>Standard Irradiance (STC) : 1000 W/m²</li>
+			</ul>
+
+		</div>
+
+		<div class="explanation-container">
+
+			<!-- Available PV -->
+
+			<div class="explanation-card">
+
+				<h3>Available PV</h3>
+
+				<h4>Description</h4>
+
+				<p>
+					Maximum PV power that can be generated under the current environmental conditions before any Zero Export control is applied.
+				</p>
+
+				<h4>Inputs</h4>
+
+				<ul>
+					<li>DC Capacity</li>
+					<li>Irradiance</li>
+					<li>Module Temperature</li>
+				</ul>
+
+				<h4>Formula</h4>
+
+				<code>
+	Temperature Factor
+
+	= 1 - (0.004 × (Temperature - 25))
+
+	Available PV
+
+	= DC Capacity
+	× (Irradiance / 1000)
+	× Temperature Factor
+	× (Inverter Efficiency / 100)
+				</code>
+
+				<h4>Engineering Note</h4>
+
+				<p>
+					Represents the maximum solar power available before the Zero Export Controller limits the inverter output.
+				</p>
+
+			</div>
+
+
+			<!-- Actual PV Output -->
+
+			<div class="explanation-card">
+
+				<h3>Actual PV Output</h3>
+
+				<h4>Description</h4>
+
+				<p>
+					Actual inverter output after applying the configured Offset.
+				</p>
+
+				<h4>Inputs</h4>
+
+				<ul>
+					<li>Available PV</li>
+					<li>Factory Load</li>
+					<li>Offset</li>
+				</ul>
+
+				<h4>Formula</h4>
+
+				<code>
+	Target PV
+
+	= Factory Load − Offset
+
+	Actual PV Output
+
+	= min(Available PV, Target PV)
+				</code>
+
+				<h4>Engineering Note</h4>
+
+				<p>
+					If Available PV is lower than the target, the inverter produces all available power. Otherwise, the Zero Export Controller limits the inverter output.
+				</p>
+
+			</div>
+
+
+			<!-- Factory Load -->
+
+			<div class="explanation-card">
+
+				<h3>Factory Load</h3>
+
+				<h4>Description</h4>
+
+				<p>
+					Total electrical power consumed by the facility.
+				</p>
+
+				<h4>Inputs</h4>
+
+				<ul>
+					<li>Factory Load (User Input)</li>
+				</ul>
+
+				<h4>Formula</h4>
+
+				<code>
+	Factory Load
+
+	= User Input
+				</code>
+
+				<h4>Engineering Note</h4>
+
+				<p>
+					Represents the instantaneous power demand that must be supplied by the PV system and/or the utility grid.
+				</p>
+
+			</div>
+
+
+			<!-- Export -->
+
+			<div class="explanation-card">
+
+				<h3>Export</h3>
+
+				<h4>Description</h4>
+
+				<p>
+					Electrical power exported to the utility grid.
+				</p>
+
+				<h4>Inputs</h4>
+
+				<ul>
+					<li>Actual PV Output</li>
+					<li>Factory Load</li>
+				</ul>
+
+				<h4>Formula</h4>
+
+				<code>
+	Export
+
+	= max(
+		0,
+		Actual PV Output − Factory Load
+	)
+				</code>
+
+				<h4>Engineering Note</h4>
+
+				<p>
+					Under normal Zero Export operation, Export should remain at 0 kW. A positive value indicates power is flowing into the utility grid.
+				</p>
+
+			</div>
+
+
+			<!-- Import -->
+
+			<div class="explanation-card">
+
+				<h3>Import</h3>
+
+				<h4>Description</h4>
+
+				<p>
+					Electrical power imported from the utility grid.
+				</p>
+
+				<h4>Inputs</h4>
+
+				<ul>
+					<li>Factory Load</li>
+					<li>Actual PV Output</li>
+				</ul>
+
+				<h4>Formula</h4>
+
+				<code>
+	Import
+
+	= max(
+		0,
+		Factory Load − Actual PV Output
+	)
+				</code>
+
+				<h4>Engineering Note</h4>
+
+				<p>
+					When sufficient PV power is available, Import is normally equal to the configured Offset. Otherwise, additional power is imported from the utility grid.
+				</p>
+
+			</div>
+
+
+			<!-- Curtailment -->
+
+			<div class="explanation-card">
+
+				<h3>Curtailment</h3>
+
+				<h4>Description</h4>
+
+				<p>
+					Solar power intentionally reduced by the Zero Export Controller to prevent power export.
+				</p>
+
+				<h4>Inputs</h4>
+
+				<ul>
+					<li>Available PV</li>
+					<li>Actual PV Output</li>
+				</ul>
+
+				<h4>Formula</h4>
+
+				<code>
+	Curtailment
+
+	= Available PV
+	− Actual PV Output
+				</code>
+
+				<h4>Engineering Note</h4>
+
+				<p>
+					Curtailment represents available solar energy that is intentionally not generated because producing it would exceed the Zero Export target.
+				</p>
+
+			</div>
+
+		</div>
+
+	</section>
 		
 
         <!-- ================= CONTROLLER ================= -->
@@ -300,55 +613,7 @@
 
         </section>
 		
-		<section class="panel">
-
-			<h2>System Status</h2>
-
-			<div class="status-bar">
-
-				<div>
-
-					Backend
-
-					<span id="connection-status" class="status status-ok">
-						Connected
-					</span>
-
-				</div>
-
-				<div>
-
-					Response Time :
-
-					<span id="response-time">
-						0 ms
-					</span>
-
-				</div>
-
-				<div>
-
-					Last Update :
-
-					<span id="last-update">
-						--
-					</span>
-
-				</div>
-
-				<div>
-
-					Version :
-
-					<span>
-						v0.1.0
-					</span>
-
-				</div>
-
-			</div>
-
-		</section>		
+	
 
     </main>
 

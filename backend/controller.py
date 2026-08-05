@@ -8,7 +8,7 @@ class ZeroExportController:
 
         target_power = max(
             0,
-            result.load - data.deadband
+            result.load - data.offset
         )
 
         if result.available_pv_power <= target_power:

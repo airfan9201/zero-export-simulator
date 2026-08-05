@@ -22,14 +22,14 @@ def root():
     return {"message": "Zero Export Simulator API"}
     
 @app.get("/simulate")
-def simulate(dc_capacity: float = 1000,irradiance: float = 900,temperature: float = 30,load: float = 500,inverter_efficiency: float = 98, deadband: float = 0):    
+def simulate(dc_capacity: float = 1000,irradiance: float = 900,temperature: float = 30,load: float = 500,inverter_efficiency: float = 98, offset: float = 0):    
     data = SimulationInput(
         dc_capacity=dc_capacity,
         irradiance=irradiance,
         temperature=temperature,
         load=load,
         inverter_efficiency=inverter_efficiency,
-        deadband=deadband
+        offset=offset
     )
     
     raw_result = simulator.run(data)    

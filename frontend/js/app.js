@@ -8,9 +8,9 @@ async function updateSimulation() {
 		const irradiance =	document.getElementById("irradiance").value;
 		const temperature =	document.getElementById("temperature").value;
 		const factoryLoad =	document.getElementById("factory-load-slider").value;
-		const deadband =  document.getElementById("deadband").value;
+		const offset =  document.getElementById("offset").value;
 		
-		const url =`${API_URL}?dc_capacity=${dcCapacity}&irradiance=${irradiance}&temperature=${temperature}&load=${factoryLoad}&deadband=${deadband}`;
+		const url =`${API_URL}?dc_capacity=${dcCapacity}&irradiance=${irradiance}&temperature=${temperature}&load=${factoryLoad}&offset=${offset}`;
 
 		const response = await fetch(url);		
 
@@ -43,7 +43,7 @@ async function updateSimulation() {
 			
 			
 		//sprint 3.1
-		document.getElementById("flow-pv").innerText =
+		/*document.getElementById("flow-pv").innerText =
 			result.available_pv_power.toFixed(2);
 
 		document.getElementById("flow-inverter").innerText =
@@ -54,11 +54,12 @@ async function updateSimulation() {
 
 		document.getElementById("flow-grid").innerText =
 			result.export.toFixed(2);
+		*/
 
     }
     catch(error){
 
-        console.error(error);
+        console.log(error);
 		const status = document.getElementById("connection-status");
 		status.innerText = "Disconnected";
 		status.className = "status status-error";
@@ -73,7 +74,7 @@ function initializeInputPanel() {
     const temperatureSlider = document.getElementById("temperature");
     const loadSlider = document.getElementById("factory-load-slider");
 	const dcCapacity =  document.getElementById("dc-capacity");	
-	const deadband =    document.getElementById("deadband");
+	const offset =    document.getElementById("offset");
 	
     irradianceSlider.addEventListener("input", () => {
 
@@ -108,7 +109,7 @@ function initializeInputPanel() {
 
 	});
 	
-	deadband.addEventListener("input", () => {
+	offset.addEventListener("input", () => {
 
 		updateSimulation();
 
