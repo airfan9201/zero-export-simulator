@@ -8,8 +8,10 @@ async function updateSimulation() {
 		const irradiance =	document.getElementById("irradiance").value;
 		const temperature =	document.getElementById("temperature").value;
 		const factoryLoad =	document.getElementById("factory-load-slider").value;
+		const deadband =  document.getElementById("deadband").value;
 		
-		const url =`${API_URL}?dc_capacity=${dcCapacity}&irradiance=${irradiance}&temperature=${temperature}&load=${factoryLoad}`;
+		const url =`${API_URL}?dc_capacity=${dcCapacity}&irradiance=${irradiance}&temperature=${temperature}&load=${factoryLoad}&deadband=${deadband}`;
+
 		const response = await fetch(url);		
 
 		const result = await response.json();
@@ -71,7 +73,8 @@ function initializeInputPanel() {
     const temperatureSlider = document.getElementById("temperature");
     const loadSlider = document.getElementById("factory-load-slider");
 	const dcCapacity =  document.getElementById("dc-capacity");	
-
+	const deadband =    document.getElementById("deadband");
+	
     irradianceSlider.addEventListener("input", () => {
 
         document.getElementById("irradiance-value").innerText =
@@ -100,6 +103,12 @@ function initializeInputPanel() {
     });
 	
 	dcCapacity.addEventListener("input", () => {
+
+		updateSimulation();
+
+	});
+	
+	deadband.addEventListener("input", () => {
 
 		updateSimulation();
 

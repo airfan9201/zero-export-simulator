@@ -363,3 +363,57 @@ body{
     color:#00E676;
 
 }
+
+.power-split{
+
+    display:flex;
+
+    align-items:center;
+
+    margin-top:20px;
+
+}
+
+.horizontal-line{
+
+    width:120px;
+
+    height:4px;
+
+    background:#00E676;
+
+}
+
+.split-right{
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+}
+
+.vertical-up{
+
+    width:4px;
+
+    height:40px;
+
+    background:#00E676;
+
+}
+
+.vertical-down{
+
+    width:4px;
+
+    height:40px;
+
+    background:#00E676;
+
+}
+
+.hideDisplay {
+	display:none;
+}
