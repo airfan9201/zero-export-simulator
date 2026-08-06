@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from simulator import Simulator
-from controller import ZeroExportController
-from models import SimulationInput
+from backend.simulator import Simulator
+from backend.controller import ZeroExportController
+from backend.models import SimulationInput
 
 app = FastAPI(title="Zero Export Simulator")
 app.add_middleware(
