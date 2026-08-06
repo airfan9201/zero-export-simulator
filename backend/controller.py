@@ -8,7 +8,7 @@ class ZeroExportController:
 
         target_power = max(
             0,
-            result.load - data.offset
+            result.incoming_meter - data.offset
         )
 
         if result.available_pv_power <= target_power:
@@ -24,7 +24,7 @@ class ZeroExportController:
             result,
             actual_pv_output=target_power,
             export=0,
-            import_power=result.load - target_power,
+            import_power=result.incoming_meter - target_power,
             curtailed_power=curtailed_power,
             inverter_limit=target_power
 

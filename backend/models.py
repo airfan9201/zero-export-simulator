@@ -6,7 +6,7 @@ class SimulationInput:
     dc_capacity: float
     irradiance: float
     temperature: float
-    load: float
+    incoming_meter: float
     inverter_efficiency: float
     offset: float = 0
     
@@ -15,7 +15,7 @@ class SimulationOutput:
 
     available_pv_power: float
     actual_pv_output: float
-    load: float
+    incoming_meter: float
     export: float
     import_power: float
     curtailed_power: float

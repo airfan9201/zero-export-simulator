@@ -7,12 +7,16 @@ async function updateSimulation() {
 		const dcCapacity =	document.getElementById("dc-capacity").value;
 		const irradiance =	document.getElementById("irradiance").value;
 		const temperature =	document.getElementById("temperature").value;
-		const factoryLoad =	document.getElementById("factory-load-slider").value;
+		const incomingMeter =	document.getElementById("incoming-meter-slider").value;
 		const offset =  document.getElementById("offset").value;
 		
-		const url =`${API_URL}?dc_capacity=${dcCapacity}&irradiance=${irradiance}&temperature=${temperature}&load=${factoryLoad}&offset=${offset}`;
+		const url =`${API_URL}?dc_capacity=${dcCapacity}&irradiance=${irradiance}&temperature=${temperature}&incoming_meter=${incomingMeter}&offset=${offset}`;
 
 		const response = await fetch(url);		
+
+		if (!response.ok) {
+			throw new Error("Backend request failed.");
+		}
 
 		const result = await response.json();
 		const elapsed = performance.now() - start;
@@ -34,13 +38,14 @@ async function updateSimulation() {
             result.actual_pv_output.toFixed(2);
 
         document.getElementById("factory-load").innerText =
-            result.load.toFixed(2);
+            result.factory_load.toFixed(2);
 
+
+		document.getElementById("incoming-meter").innerText =
+		result.incoming_meter.toFixed(2);
+	
         document.getElementById("export").innerText =
             result.export.toFixed(2);
-
-        document.getElementById("import").innerText =
-            result.import_power.toFixed(2);
 
         document.getElementById("curtailment").innerText =
             result.curtailed_power.toFixed(2);
@@ -65,10 +70,19 @@ async function updateSimulation() {
     }
     catch(error){
 
-        console.log(error);
+        console.error(error);
 		const status = document.getElementById("connection-status");
 		status.innerText = "Disconnected";
 		status.className = "status status-error";
+
+		document.getElementById("available-pv").innerText = "--";
+		document.getElementById("actual-pv").innerText = "--";
+		document.getElementById("factory-load").innerText = "--";
+		document.getElementById("incoming-meter").innerText = "--";
+		document.getElementById("export").innerText = "--";
+		document.getElementById("curtailment").innerText = "--";
+		document.getElementById("response-time").innerText = "--";
+		document.getElementById("last-update").innerText = "--";
 
     }
 
@@ -78,7 +92,7 @@ function initializeInputPanel() {
 
     const irradianceSlider = document.getElementById("irradiance");
     const temperatureSlider = document.getElementById("temperature");
-    const loadSlider = document.getElementById("factory-load-slider");
+    const incomingMeterSlider = document.getElementById("incoming-meter-slider");
 	const dcCapacity =  document.getElementById("dc-capacity");	
 	const offset =    document.getElementById("offset");
 	
@@ -100,10 +114,10 @@ function initializeInputPanel() {
 
     });
 
-    loadSlider.addEventListener("input", () => {
+    incomingMeterSlider.addEventListener("input", () => {
 
-        document.getElementById("factory-load-value").innerText =
-            loadSlider.value;
+        document.getElementById("incoming-meter-value").innerText =
+            incomingMeterSlider.value;
 			
 		 updateSimulation();	
 
@@ -137,7 +151,7 @@ function updateAssessment(result){
             "🟢 Zero Export Active";
 
      description.innerHTML = `
-		<li>Available PV exceeds factory load.</li>
+		<li>Available PV exceeds the factory demand.</li>
 		<li>Controller limits inverter output.</li>
 		<li>No power is exported to the utility grid.</li>
 		<li>System operating as expected.</li>
@@ -149,8 +163,12 @@ function updateAssessment(result){
         title.innerText =
             "🟢 PV Limited By Availability";
 
-        description.innerText =
-            "The PV system is operating at its maximum available output. Additional factory demand is supplied by the utility grid.";
+		description.innerHTML = `
+			<li>Available PV is lower than the factory demand.</li>
+			<li>The inverter is operating at maximum available output.</li>
+			<li>Additional power is supplied by the utility grid.</li>
+			<li>No curtailment is required.</li>
+		`;
 
     }
 

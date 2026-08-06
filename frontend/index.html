@@ -168,26 +168,26 @@
 				</div>
 
 
-				<!-- Factory Load -->
+				<!-- Incoming Meter -->
 
 				<div class="input-group">
 
 					<label>
 
-						Factory Load
+						Incoming Meter
 
 					</label>
 
 					<input
 						type="range"
-						id="factory-load-slider"
+						id="incoming-meter-slider"
 						min="0"
 						max="25000"
 						value="500">
 
 					<div class="slider-value">
 
-						<span id="factory-load-value">
+						<span id="incoming-meter-value">
 
 							500
 
@@ -263,6 +263,23 @@
                 </div>
 
 
+				<div class="result-card">
+
+					<div class="card-title">
+						Incoming Meter
+					</div>
+
+					<div class="card-value" id="incoming-meter">
+						0.00
+					</div>
+
+					<div class="card-unit">
+						kW
+					</div>
+
+				</div>
+				
+
                 <div class="result-card">
 
                     <div class="card-title">
@@ -283,44 +300,26 @@
                 <div class="result-card">
 
                     <div class="card-title">
-                        Export
-                    </div>
-
-                    <div class="card-value" id="export">
-                        0.00
-                    </div>
-
-                    <div class="card-unit">
-                        kW
-                    </div>
-
-                </div>
-
-
-                <div class="result-card">
-
-                    <div class="card-title">
-                        Import
-                    </div>
-
-                    <div class="card-value" id="import">
-                        0.00
-                    </div>
-
-                    <div class="card-unit">
-                        kW
-                    </div>
-
-                </div>
-
-
-                <div class="result-card">
-
-                    <div class="card-title">
                         Curtailment
                     </div>
 
                     <div class="card-value" id="curtailment">
+                        0.00
+                    </div>
+
+                    <div class="card-unit">
+                        kW
+                    </div>
+
+                </div>
+
+                <div class="result-card">
+
+                    <div class="card-title">
+                        Export
+                    </div>
+
+                    <div class="card-value" id="export">
                         0.00
                     </div>
 
@@ -359,6 +358,20 @@
 		<h2>Engineering Calculation Reference</h2>
 
 		<div class="assumption-card">
+		
+			<h3>Fundamental Power Balance</h3>
+
+			<p>
+
+			P<sub>load</sub> = P<sub>solar</sub> + P<sub>grid</sub>
+
+			</p>
+
+			<p>
+
+			This simulator is based on the fundamental power balance equation used in Zero Export systems.
+
+			</p>
 
 			<h3>Simulation Assumptions</h3>
 
@@ -402,16 +415,16 @@
 				<h4>Formula</h4>
 
 				<code>
-	Temperature Factor
+					Temperature Factor
 
-	= 1 - (0.004 × (Temperature - 25))
+					= 1 - (0.004 × (Temperature - 25))
 
-	Available PV
+					Available PV
 
-	= DC Capacity
-	× (Irradiance / 1000)
-	× Temperature Factor
-	× (Inverter Efficiency / 100)
+					= DC Capacity
+					× (Irradiance / 1000)
+					× Temperature Factor
+					× (Inverter Efficiency / 100)
 				</code>
 
 				<h4>Engineering Note</h4>
@@ -439,20 +452,20 @@
 
 				<ul>
 					<li>Available PV</li>
-					<li>Factory Load</li>
+					<li>Incoming Meter</li>
 					<li>Offset</li>
 				</ul>
 
 				<h4>Formula</h4>
 
 				<code>
-	Target PV
 
-	= Factory Load − Offset
+					Actual PV Output
 
-	Actual PV Output
+					=
 
-	= min(Available PV, Target PV)
+					Available PV limited by
+					Zero Export Controller
 				</code>
 
 				<h4>Engineering Note</h4>
@@ -479,15 +492,21 @@
 				<h4>Inputs</h4>
 
 				<ul>
-					<li>Factory Load (User Input)</li>
+					<li>Actual PV Output</li>
+					<li>Incoming Meter</li>
+					
 				</ul>
 
 				<h4>Formula</h4>
 
 				<code>
-	Factory Load
+				Factory Load
 
-	= User Input
+				=
+
+				Actual PV Output
+				+
+				Incoming Meter
 				</code>
 
 				<h4>Engineering Note</h4>
@@ -532,49 +551,12 @@
 				<h4>Engineering Note</h4>
 
 				<p>
-					Under normal Zero Export operation, Export should remain at 0 kW. A positive value indicates power is flowing into the utility grid.
+					Under normal Zero Export operation, Export should always remain at 0 kW. A positive value indicates that the controller has failed to limit inverter output correctly.
 				</p>
 
 			</div>
 
 
-			<!-- Import -->
-
-			<div class="explanation-card">
-
-				<h3>Import</h3>
-
-				<h4>Description</h4>
-
-				<p>
-					Electrical power imported from the utility grid.
-				</p>
-
-				<h4>Inputs</h4>
-
-				<ul>
-					<li>Factory Load</li>
-					<li>Actual PV Output</li>
-				</ul>
-
-				<h4>Formula</h4>
-
-				<code>
-	Import
-
-	= max(
-		0,
-		Factory Load − Actual PV Output
-	)
-				</code>
-
-				<h4>Engineering Note</h4>
-
-				<p>
-					When sufficient PV power is available, Import is normally equal to the configured Offset. Otherwise, additional power is imported from the utility grid.
-				</p>
-
-			</div>
 
 
 			<!-- Curtailment -->

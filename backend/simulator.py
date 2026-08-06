@@ -16,14 +16,14 @@ class Simulator:
             * (data.inverter_efficiency / 100)
         )
         
-        export_power = max(0, available_pv_power - data.load)
+        export_power = max(0, available_pv_power - data.incoming_meter)
 
-        import_power = max(0, data.load - available_pv_power)
+        import_power = max(0, data.incoming_meter - available_pv_power)
         
         return SimulationOutput(
             available_pv_power=available_pv_power,
             actual_pv_output=available_pv_power,
-            load=data.load,
+            incoming_meter=data.incoming_meter,
             export=export_power,
             import_power=import_power,
             curtailed_power=0,
