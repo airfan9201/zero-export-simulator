@@ -91,7 +91,10 @@
 			<p style="margin-bottom: 15px; color: var(--text-secondary);">Select a pre-configured scenario to test system response:</p>
 			<div style="display: flex; gap: 10px; flex-wrap: wrap;">
 				<button class="scenario-btn active" id="btn-normal" onclick="applyScenario('normal', this)">☀️ Normal Operation</button>
-				<button class="scenario-btn" id="btn-load_drop" onclick="applyScenario('load_drop', this)">⚠️ Sudden Load Drop</button>
+				<button class="scenario-btn" id="btn-load_drop" onclick="applyScenario('load_drop', this)">
+					⚠️ Sudden Load Drop 
+					<span class="tooltip-icon" data-tooltip="When clicked, the display temporarily turns RED (EXPORT) for 2.5s to simulate real-world hardware latency before stabilizing curtailment.">ℹ️</span>
+				</button>
 				<button class="scenario-btn" id="btn-cloud" onclick="applyScenario('cloud', this)">☁️ Cloud Passing</button>
 				<button class="scenario-btn" id="btn-offset_test" onclick="applyScenario('offset_test', this)">🛡️ Offset Protection</button>
 			</div>
