@@ -15,8 +15,8 @@ class SimulationOutput:
 
     available_pv_power: float
     actual_pv_output: float
+    factory_load: float
     incoming_meter: float
     export: float
-    import_power: float
     curtailed_power: float
     inverter_limit: float

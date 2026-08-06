@@ -17,15 +17,13 @@ class Simulator:
         )
         
         export_power = max(0, available_pv_power - data.incoming_meter)
-
-        import_power = max(0, data.incoming_meter - available_pv_power)
         
         return SimulationOutput(
             available_pv_power=available_pv_power,
             actual_pv_output=available_pv_power,
+            factory_load=0,
             incoming_meter=data.incoming_meter,
             export=export_power,
-            import_power=import_power,
             curtailed_power=0,
             inverter_limit=available_pv_power
         )

@@ -19,12 +19,14 @@ class ZeroExportController:
             - target_power
         )
 
+        factory_load = target_power + result.incoming_meter
+
         return replace(
 
             result,
             actual_pv_output=target_power,
+            factory_load=factory_load,
             export=0,
-            import_power=result.incoming_meter - target_power,
             curtailed_power=curtailed_power,
             inverter_limit=target_power
 
