@@ -9,18 +9,25 @@
     <title>Zero Export Simulator</title>
 
     <link rel="stylesheet" href="css/style.css">
-
+	<!-- Tambah di dalam <head> index.html -->
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
 
-    <header class="header">
-
-        <h1>ZERO EXPORT SIMULATOR</h1>
-
-        <p>Professional Zero Export Control Training Platform</p>
-
-    </header>
+	<header class="header">
+		<div style="display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: auto;">
+			<div>
+				<h1>ZERO EXPORT SIMULATOR</h1>
+				<p>Professional Zero Export Control Training Platform</p>
+			</div>
+			
+			<!-- Butang Tukar Tema -->
+			<button id="theme-toggle" class="scenario-btn" onclick="toggleTheme()" style="display: flex; align-items: center; gap: 8px;">
+				<span id="theme-icon">☀️</span> <span id="theme-text">Light Mode</span>
+			</button>
+		</div>
+	</header>
 
 
     <main class="container">
@@ -77,7 +84,80 @@
 
 		</section>		
 
-        <!-- ================= INPUT ================= -->
+
+		<!-- Tambah panel ini di atas <section class="panel"> Simulation Input dalam index.html -->
+		<section class="panel">
+			<h2>Training Scenarios</h2>
+			<p style="margin-bottom: 15px; color: var(--text-secondary);">Select a pre-configured scenario to test system response:</p>
+			<div style="display: flex; gap: 10px; flex-wrap: wrap;">
+				<button class="scenario-btn active" id="btn-normal" onclick="applyScenario('normal', this)">☀️ Normal Operation</button>
+				<button class="scenario-btn" id="btn-load_drop" onclick="applyScenario('load_drop', this)">⚠️ Sudden Load Drop</button>
+				<button class="scenario-btn" id="btn-cloud" onclick="applyScenario('cloud', this)">☁️ Cloud Passing</button>
+				<button class="scenario-btn" id="btn-offset_test" onclick="applyScenario('offset_test', this)">🛡️ Offset Protection</button>
+			</div>
+		</section>
+
+	<!-- ================= POWER FLOW SCHEMATIC ================= -->
+	<!-- BUNGKUS DENGAN DASHBOARD GRID -->
+		<div class="dashboard-grid">
+			<section class="panel">
+				<h2>System Power Flow Diagram</h2>
+				<div class="power-flow-container">
+					
+					<!-- Node Solar -->
+					<div class="node-card" id="node-pv">
+						<div class="node-icon">☀️</div>
+						<div class="node-title">PV Array</div>
+						<div class="node-value" id="flow-pv-val">0.00 kW</div>
+					</div>
+
+					<div class="flow-line vertical" id="line-pv-inv">
+						<span class="flow-arrow">▼</span>
+					</div>
+
+					<!-- Node Inverter -->
+					<div class="node-card" id="node-inverter">
+						<div class="node-icon">⚡</div>
+						<div class="node-title">Inverter</div>
+						<div class="node-value" id="flow-inv-val">0.00 kW</div>
+					</div>
+
+					<div class="flow-line horizontal" id="line-inv-load">
+						<span class="flow-arrow">►</span>
+					</div>
+
+					<!-- Node Factory Load -->
+					<div class="node-card" id="node-load">
+						<div class="node-icon">🏭</div>
+						<div class="node-title">Factory Load</div>
+						<div class="node-value" id="flow-load-val">0.00 kW</div>
+					</div>
+
+					<div class="flow-line horizontal" id="line-grid-load">
+						<span class="flow-arrow" id="arrow-grid">◄</span>
+					</div>
+
+					<!-- Node Grid / TNB -->
+					<div class="node-card" id="node-grid">
+						<div class="node-icon">🏢</div>
+						<div class="node-title">Utility Grid</div>
+						<div class="node-value" id="flow-grid-val">0.00 kW</div>
+					</div>
+
+				</div>
+			</section>
+			
+			<!-- Panel Graf Live -->
+			<section class="panel">
+				<h2>Power Distribution Trend</h2>
+				<div style="position: relative; height:320px; width:100%">
+					<canvas id="powerChart"></canvas>
+				</div>
+			</section>
+		
+		</div>
+		
+	   <!-- ================= INPUT ================= -->
 
         <section class="panel">
 
@@ -119,13 +199,13 @@
 						id="irradiance"
 						min="0"
 						max="1200"
-						value="900">
+						value="1000">
 
 					<div class="slider-value">
 
 						<span id="irradiance-value">
 
-							900
+							1000
 
 						</span>
 
@@ -151,13 +231,13 @@
 						id="temperature"
 						min="0"
 						max="80"
-						value="30">
+						value="35">
 
 					<div class="slider-value">
 
 						<span id="temperature-value">
 
-							30
+							35
 
 						</span>
 
@@ -168,35 +248,24 @@
 				</div>
 
 
-				<!-- Incoming Meter -->
-
+				<!-- Factory Load -->
+				<!-- Tukar input group ini dalam index.html -->
 				<div class="input-group">
-
-					<label>
-
-						Incoming Meter
-
+					<label for="incoming-meter-slider">
+						Factory Load (kW)
 					</label>
-
 					<input
 						type="range"
 						id="incoming-meter-slider"
 						min="0"
-						max="25000"
-						value="500">
-
+						max="30000"
+						value="25000">
 					<div class="slider-value">
-
 						<span id="incoming-meter-value">
-
-							500
-
+							25000
 						</span>
-
 						kW
-
 					</div>
-
 				</div>
 
 			
@@ -221,6 +290,7 @@
         </section>
 
 
+	
         <!-- ================= RESULT OUTPUT================= -->
 
         <section class="panel">
@@ -333,6 +403,7 @@
 
         </section>
 
+		
 		<!-- ================= RESULT SUMMARY ================= -->
 		<section class="panel">
 
@@ -445,33 +516,33 @@
 				<h4>Description</h4>
 
 				<p>
-					Actual inverter output after applying the configured Offset.
+					Actual inverter output after applying the Zero Export control and configured Offset.
 				</p>
 
 				<h4>Inputs</h4>
 
 				<ul>
 					<li>Available PV</li>
-					<li>Incoming Meter</li>
+					<li>Factory Load</li>
 					<li>Offset</li>
 				</ul>
 
 				<h4>Formula</h4>
 
 				<code>
+					Target PV
+
+					= max(0, Factory Load − Offset)
 
 					Actual PV Output
 
-					=
-
-					Available PV limited by
-					Zero Export Controller
+					= min(Available PV, Target PV)
 				</code>
 
 				<h4>Engineering Note</h4>
 
 				<p>
-					If Available PV is lower than the required inverter output, the inverter delivers all available solar power. Otherwise, the Zero Export Controller limits the inverter output to prevent export.
+					If Available PV is lower than the target demand, the inverter delivers all available solar power. Otherwise, the Zero Export Controller limits the inverter output to prevent export.
 				</p>
 
 			</div>
@@ -486,33 +557,31 @@
 				<h4>Description</h4>
 
 				<p>
-					Total electrical power consumed by the facility.
+					Total electrical power consumed by the facility (Simulated Environment Demand).
 				</p>
 
 				<h4>Inputs</h4>
 
 				<ul>
-					<li>Actual PV Output</li>
-					<li>Incoming Meter</li>
-					
+					<li>Factory Load Slider (Simulation Input)</li>
 				</ul>
 
 				<h4>Formula</h4>
 
 				<code>
-				Factory Load
+					Factory Load
 
-				=
+					= 
 
-				Actual PV Output
-				+
-				Incoming Meter
+					Actual PV Output
+					+
+					Incoming Meter (Grid)
 				</code>
 
 				<h4>Engineering Note</h4>
 
 				<p>
-					Represents the instantaneous power demand that must be supplied by the PV system and/or the utility grid.
+					Represents the instantaneous power demand of the facility that must be supplied collectively by the PV system and/or the utility grid.
 				</p>
 
 			</div>
@@ -540,18 +609,18 @@
 				<h4>Formula</h4>
 
 				<code>
-	Export
+					Export
 
-	= max(
-		0,
-		Actual PV Output − Factory Load
-	)
+					= max(
+						0,
+						Actual PV Output − Factory Load
+					)
 				</code>
 
 				<h4>Engineering Note</h4>
 
 				<p>
-					Under normal Zero Export operation, Export should always remain at 0 kW. A positive value indicates that the controller has failed to limit inverter output correctly.
+					Under normal Zero Export operation, Export should always remain at 0 kW. A positive value indicates a temporary controller response lag or failure.
 				</p>
 
 			</div>
@@ -580,10 +649,10 @@
 				<h4>Formula</h4>
 
 				<code>
-	Curtailment
+					Curtailment
 
-	= Available PV
-	− Actual PV Output
+					= Available PV
+					− Actual PV Output
 				</code>
 
 				<h4>Engineering Note</h4>

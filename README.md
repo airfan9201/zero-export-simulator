@@ -1,38 +1,3 @@
-Project Name
-
-Zero Export Simulator
-
-Mission
-
-To develop a professional web-based simulator that accurately models
-Zero Export Control for solar PV systems.
-
-Primary Objective
-
-Training
-Commissioning
-Testing
-Validation
-
-Target Users
-
-Solar EPC
-Commissioning Engineer
-Service Engineer
-Technical Sales
-University
-TVET
-
-Out of Scope
-
-Battery EMS
-Diesel
-EV
-Forecast
-Financial Analysis
-
-
-
 # Zero Export Simulator
 
 ## Development
@@ -72,3 +37,18 @@ http://127.0.0.1:5500
 Backend URL
 
 http://127.0.0.1:8000/docs
+
+
+###ATAU
+# Zero Export Simulator
+
+Platform simulasi dan latihan kawalan *Zero Export* untuk sistem Solar PV.
+
+## Cara Menjalankan Backend
+1. Install dependensi:
+   `pip install -r requirements.txt`
+2. Jalankan perkhidmatan FastAPI:
+   `uvicorn main:app --reload`
+
+## Cara Menjalankan Frontend
+Buka fail `index.html` pada mana-mana pelayar web.

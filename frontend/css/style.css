@@ -1,442 +1,461 @@
-:root{
-
-    --primary:#00E676;
-
-    --primary-dark:#00C853;
-
-    --panel:#2D2D30;
-
-    --card:#303134;
-
-    --border:#4A4A4A;
-
-    --text:#DDDDDD;
-
-    --text-secondary:#AAAAAA;
-
-    --background:#1E1E1E;
-
+/* ================= TEMA & PEMBOLEHUBAH ================= */
+/* Dark Theme (Laluan) */
+:root {
+    --primary: #00E676;
+    --primary-dark: #00C853;
+    --panel: #2D2D30;
+    --card: #303134;
+    --border: #4A4A4A;
+    --text: #DDDDDD;
+    --text-secondary: #AAAAAA;
+    --background: #1E1E1E;
+    --header-bg: #252526;
+    --input-bg: #444444;
+    --inner-container: #252526;
+    --btn-bg: #3A3A3D;
+    --btn-hover: #4A4A4D;
+    --arrow-bg: #1E1E1E;
 }
 
-*{
-
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-
+/* Light Theme Overrides */
+[data-theme="light"] {
+    --primary: #00A843;
+    --primary-dark: #008937;
+    --panel: #FFFFFF;
+    --card: #F8F9FA;
+    --border: #CED4DA;
+    --text: #212529;
+    --text-secondary: #6C757D;
+    --background: #F1F3F5;
+    --header-bg: #FFFFFF;
+    --input-bg: #E9ECEF;
+    --inner-container: #E9ECEF;
+    --btn-bg: #E9ECEF;
+    --btn-hover: #DEE2E6;
+    --arrow-bg: #FFFFFF;
 }
 
-body{
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-    background:var(--background);
-
-    color:white;
-
-    font-family:Segoe UI,Tahoma,Geneva,Verdana,sans-serif;
-
+/* Kemaskini warna teks am */
+body {
+    background: var(--background);
+    color: var(--text);
+    font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
 /* ================= HEADER ================= */
-
-.header{
-
-    background:#252526;
-
-    padding:25px;
-
-    text-align:center;
-
-    border-bottom:3px solid var(--primary-dark);
-
+.header {
+    background: var(--header-bg);
+    padding: 25px;
+    border-bottom: 3px solid var(--primary-dark);
+    transition: background 0.3s ease;
 }
 
-.header h1{
-
-    font-size:32px;
-
-    letter-spacing:2px;
-
+.header h1 {
+    color: var(--text);
 }
 
-.header p{
-
-    margin-top:10px;
-
-    color:#B0B0B0;
-
+.header p {
+    margin-top: 10px;
+    color: var(--text-secondary);
 }
 
 /* ================= MAIN ================= */
-
-.container{
-
-    width:95%;
-
-    max-width:1400px;
-
-    margin:auto;
-
-    padding:30px 0;
-
+.container {
+    width: 95%;
+    max-width: 1400px;
+    margin: auto;
+    padding: 30px 0;
 }
 
 /* ================= PANEL ================= */
-
-.panel{
-
-    background:var(--panel);
-
-    margin-bottom:25px;
-
-    border-radius:10px;
-
-    padding:20px;
-
-    border-left:6px solid var(--primary-dark);
-
+.panel {
+    background: var(--panel);
+    margin-bottom: 25px;
+    border-radius: 10px;
+    padding: 20px;
+    border-left: 6px solid var(--primary-dark);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: background 0.3s ease, border-color 0.3s ease;
 }
 
-.panel h2{
-
-    margin-bottom:20px;
-
-    color:var(--primary);
-
+.panel h2 {
+    margin-bottom: 20px;
+    color: var(--primary);
 }
 
 /* ================= RESULT GRID ================= */
-
-.result-grid{
-
-    display:grid;
-
-    grid-template-columns:repeat(3,1fr);
-
-    gap:20px;
-
+.result-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
 }
 
 /* ================= CARD ================= */
-
-.result-card{
-
-    background:#3A3A3D;
-
-    border-radius:10px;
-
-    padding:20px;
-
-    text-align:center;
-
-    transition:.25s;
-
-    border:1px solid var(--border);
-
+.result-card {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.25s, border-color 0.25s, background 0.3s;
+    border: 1px solid var(--border);
 }
 
-.result-card:hover{
-
-    transform:translateY(-3px);
-
-    border-color:var(--primary-dark);
-
+.result-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--primary-dark);
 }
 
 /* ================= CARD TITLE ================= */
-
-.card-title{
-
-    color:#CCCCCC;
-
-    font-size:18px;
-
+.card-title {
+    color: var(--text-secondary);
+    font-size: 18px;
 }
 
 /* ================= VALUE ================= */
-
-.card-value{
-
-    font-size:42px;
-
-    font-weight:bold;
-
-    margin-top:15px;
-
-    color:var(--primary);
-
+.card-value {
+    font-size: 42px;
+    font-weight: bold;
+    margin-top: 15px;
+    color: var(--primary);
 }
 
 /* ================= UNIT ================= */
-
-.card-unit{
-
-    margin-top:10px;
-
-    color:var(--text-secondary);
-
-    font-size:15px;
-
+.card-unit {
+    margin-top: 10px;
+    color: var(--text-secondary);
+    font-size: 15px;
 }
 
 /* ================= STATUS ================= */
-
-.status{
-
-    display:inline-block;
-
-    padding:12px 20px;
-
-    border-radius:8px;
-
-    font-weight:bold;
-
+.status {
+    display: inline-block;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: bold;
 }
 
-.status-ok{
-
-    background:var(--primary-dark);
-
-    color:white;
-
+.status-ok {
+    background: var(--primary-dark);
+    color: white;
 }
 
 /* ================= RESPONSIVE ================= */
-
-@media (max-width:1000px){
-
-    .result-grid{
-
-        grid-template-columns:repeat(2,1fr);
-
+@media (max-width: 1000px) {
+    .result-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
-
 }
 
-@media (max-width:650px){
-
-    .result-grid{
-
-        grid-template-columns:1fr;
-
+@media (max-width: 650px) {
+    .result-grid {
+        grid-template-columns: 1fr;
     }
-
 }
 
 /* ================= STATUS BAR ================= */
-
-.status-bar{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    flex-wrap:wrap;
-
-    gap:20px;
-
-    font-size:16px;
-
+.status-bar {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+    font-size: 16px;
 }
 
-.status-bar div{
-
-    color:var(--text);
-
+.status-bar div {
+    color: var(--text);
 }
 
-.status-error{
-
-    background:#F44336;
-
-    color:white;
-
+.status-error {
+    background: #F44336;
+    color: white;
 }
 
 /* ================= INPUT PANEL ================= */
-
-.input-group{
-
-    margin-bottom:30px;
-
+.input-group {
+    margin-bottom: 30px;
 }
 
-.input-group label{
-
-    display:block;
-
-    margin-bottom:10px;
-
-    color:var(--text);
-
-    font-weight:bold;
-
+.input-group label {
+    display: block;
+    margin-bottom: 10px;
+    color: var(--text);
+    font-weight: bold;
 }
 
-.input-group input[type=number]{
-
-    width:220px;
-
-    padding:10px;
-
-    font-size:18px;
-
-    border-radius:6px;
-
-    border:none;
-
-    background:#444;
-
-    color:white;
-
+/* Kemaskini latar belakang input */
+.input-group input[type=number] {
+    background: var(--input-bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 18px;
+    width: 220px;
+    transition: background 0.3s, color 0.3s;
 }
 
-.input-group input[type=range]{
-
-    width:100%;
-
-    cursor:pointer;
-
+.input-group input[type=range] {
+    width: 100%;
+    cursor: pointer;
 }
 
-.slider-value{
-
-    margin-top:8px;
-
-    font-size:18px;
-
-    color:var(--primary);
-
+.slider-value {
+    margin-top: 8px;
+    font-size: 18px;
+    color: var(--primary);
 }
 
 /* ================= POWER FLOW ================= */
-
 .hideDisplay {
-	display:none;
+    display: none;
 }
 
 /* ==========================================
    Simulation Explanation
 ========================================== */
-
-.explanation-container{
-
-    display:grid;
-
-    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
-
-    gap:20px;
-
+.explanation-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
 }
 
-.explanation-card{
-
-    background:var(--card);
-
-    border:1px solid var(--border);
-
-    border-radius:10px;
-
-    padding:20px;
-	transition:.25s;
-
+.explanation-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    transition: transform 0.25s, border-color 0.25s, background 0.3s;
 }
 
-.explanation-card h3{
-
-    color:var(--primary);
-
-    margin-bottom:15px;
-
+.explanation-card h3 {
+    color: var(--primary);
+    margin-bottom: 15px;
 }
 
-.explanation-card h4{
-
-    margin-top:18px;
-
-    margin-bottom:8px;
-
-    color:#FFD54F;
-
+.explanation-card h4 {
+    margin-top: 18px;
+    margin-bottom: 8px;
+    color: #FFD54F;
 }
 
-.explanation-card p{
-
-    color:var(--text);
-
-    line-height:1.6;
-
+.explanation-card p {
+    color: var(--text);
+    line-height: 1.6;
 }
 
-.explanation-card ul{
-
-    padding-left:20px;
-
+.explanation-card ul {
+    padding-left: 20px;
 }
 
-.explanation-card li{
-
-    margin-bottom:5px;
-
+.explanation-card li {
+    margin-bottom: 5px;
 }
 
-.explanation-card code{
-
-    display:block;
-
-    margin-top:10px;
-
-    padding:12px;
-
-    background:var(--background);
-
-    color:#7CFF8F;
-
-    border-radius:6px;
-
-    white-space:pre-line;
-
-    font-family:Consolas, monospace;
-
+.explanation-card code {
+    display: block;
+    margin-top: 10px;
+    padding: 12px;
+    background: var(--background);
+    color: #7CFF8F;
+    border-radius: 6px;
+    white-space: pre-line;
+    font-family: Consolas, monospace;
 }
 
-.explanation-card:hover{
-
-    transform:translateY(-3px);
-
-    border-color:var(--primary-dark);
-
+.explanation-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--primary-dark);
 }
 
 /* ==========================================
    Simulation Assessment
 ========================================== */
-
-.assessment-card{
-
-    background:var(--card);
-
-    border-radius:10px;
-
-    padding:20px;
-
+.assessment-card {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 20px;
+    border: 1px solid var(--border);
+    transition: background 0.3s;
 }
 
-.assessment-card h3{
-
-    margin-bottom:12px;
-
+.assessment-card h3 {
+    margin-bottom: 12px;
 }
 
-.assessment-card p{
-
-    line-height:1.6;
-
+.assessment-card p {
+    line-height: 1.6;
 }
 
-.assumption-card ul{
+.assumption-card ul {
+    margin-top: 15px;
+    padding-left: 25px;
+    margin-bottom: 15px;
+}
 
-    margin-top:15px;
-    padding-left:25px;
-	margin-bottom:15px;
-	
+/* ================= BUTTON SCENARIO ================= */
+.scenario-btn {
+    background: var(--btn-bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s ease-in-out;
+}
+
+.scenario-btn:hover {
+    background: var(--btn-hover);
+    border-color: var(--primary);
+}
+
+/* Status Active / Selected */
+.scenario-btn.active {
+    background: var(--primary-dark) !important;
+    color: #FFFFFF !important;
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 10px rgba(0, 200, 83, 0.4);
+    transform: translateY(-2px);
+}
+
+/* ================= POWER FLOW SCHEMATIC ================= */
+.power-flow-container {
+    display: grid;
+    grid-template-columns: 1.2fr 80px 1.2fr 80px 1.2fr;
+    grid-template-rows: auto 60px auto;
+    align-items: center;
+    justify-items: center;
+    padding: 30px;
+    background: var(--inner-container);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    width: 100%;
+    transition: background 0.3s ease;
+}
+
+#node-pv { grid-column: 1; grid-row: 1; }
+#line-pv-inv { grid-column: 1; grid-row: 2; }
+#node-inverter { grid-column: 1; grid-row: 3; }
+
+#line-inv-load { grid-column: 2; grid-row: 3; width: 100%; }
+#node-load { grid-column: 3; grid-row: 3; }
+
+#line-grid-load { grid-column: 4; grid-row: 3; width: 100%; }
+#node-grid { grid-column: 5; grid-row: 3; }
+
+/* Kad Node yang Lebih Besar */
+.node-card {
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 15px;
+    text-align: center;
+    width: 100%;
+    max-width: 200px;
+    transition: 0.3s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 2;
+}
+
+.node-icon { 
+    font-size: 38px;
+    margin-bottom: 8px; 
+}
+
+.node-title { 
+    font-size: 16px;
+    color: var(--text-secondary); 
+    font-weight: bold; 
+}
+
+.node-value { 
+    font-size: 18px;
+    font-weight: bold; 
+    color: var(--primary); 
+    margin-top: 8px; 
+}
+
+/* Garisan dan Anak Panah yang Lebih Jelas */
+.flow-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+}
+
+.flow-line.horizontal { 
+    height: 3px; 
+    background: var(--border); 
+}
+
+.flow-line.vertical { 
+    width: 3px; 
+    height: 100%; 
+    background: var(--border); 
+}
+
+.flow-arrow {
+    background: var(--arrow-bg);
+    padding: 4px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--text);
+    transition: background 0.3s, color 0.3s;
+}
+
+/* Response Status Colors */
+.status-active { 
+    border-color: var(--primary) !important; 
+    box-shadow: 0 0 12px rgba(0, 230, 118, 0.3);
+}
+
+.status-export { 
+    border-color: #F44336 !important; 
+    box-shadow: 0 0 12px rgba(244, 67, 54, 0.4);
+}
+
+@media (max-width: 900px) {
+    .power-flow-container {
+        grid-template-columns: 1fr 40px 1fr 40px 1fr;
+        padding: 15px;
+    }
+    .node-card {
+        padding: 12px 8px;
+    }
+    .node-title { font-size: 13px; }
+    .node-value { font-size: 14px; }
+}
+
+/* ================= DASHBOARD GRID (SIDE-BY-SIDE) ================= */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Dua lajur bersebelahan dengan saiz seimbang */
+    gap: 25px;
+    align-items: stretch;
+    margin-bottom: 25px;
+}
+
+/* Pastikan panel di dalam grid mengambil ketinggian penuh */
+.dashboard-grid .panel {
+    margin-bottom: 0; /* Padam margin bawah supaya tidak bertindih */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Penyesuaian Responsif untuk Skrin Telefon / Tablet Kecil */
+@media (max-width: 1100px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr; /* Bertukar menjadi 1 lajur atas-bawah pada skrin kecil */
+    }
 }
