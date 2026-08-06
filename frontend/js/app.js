@@ -1,4 +1,4 @@
-const API_URL = "http://127.0.0.1:8000/simulate";
+const API_URL = "https://zero-export-simulator.onrender.com//simulate";
 
 // Variable global untuk simpan instance chart
 let powerChart = null;
