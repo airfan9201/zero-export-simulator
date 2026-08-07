@@ -445,31 +445,27 @@ function startGame() {
     }, 1000);
 }
 
+
+
+// Variable Jejak Krisis (Letak di bahagian atas app.js)
+let crisisActive = false; 
+
 function triggerRandomEvent() {
-    // Tukar peristiwa rawak kepada arahan bahasa Melayu yang sangat ringkas
-    const loadSlider = document.getElementById('loadSlider');
     const irrSlider = document.getElementById('irrSlider');
 
-    // 50% peluang untuk krisis berlaku (supaya pemain ada masa bernafas)
-    const isCrisis = Math.random() < 0.5;
+    // 1. JETUSKAN KRISIS (Hanya jika tiada krisis yang sedang berjalan)
+    if (!crisisActive) {
+        crisisActive = true; // Tandakan krisis bermula!
 
-    if (isCrisis) {
-        // PERISTIWA: Solar Terlebih (Pemain kena kurangkan slider!)
         if (irrSlider) {
-            irrSlider.value = 1000; // Naikkan solar ke maks
+            irrSlider.value = 1000; // Naikkan solar ke maksimum untuk paksa Export
             irrSlider.dispatchEvent(new Event('input'));
         }
+
         document.getElementById('gameEventBanner').className = "game-banner game-warning";
-        document.getElementById('gameEventBanner').innerHTML = "🚨 AMARAN: Solar Terlalu Tinggi! Perlahankan Slider Solar/Irr untuk hentikan Export!";
-    } else {
-        // PERISTIWA: Stabil
-        document.getElementById('gameEventBanner').className = "game-banner";
-        document.getElementById('gameEventBanner').innerHTML = "🌤️ CUACA STABIL: Pastikan status kekal Hijau untuk kumpul markah!";
+        document.getElementById('gameEventBanner').innerHTML = "🚨 AMARAN: Solar Terlalu Tinggi! Turunkan Slider Solar/Irr sekarang!";
     }
 }
-
-// Variable tambahan untuk jejak status terdahulu
-let wasInCrisis = false; 
 
 function checkZeroExportCompliance() {
     const gridValElem = document.getElementById('flow-grid-val');
@@ -479,33 +475,37 @@ function checkZeroExportCompliance() {
     const isExporting = gridText.includes('EXPORT') || gridText.includes('-') || document.querySelector('.status-export');
 
     if (isExporting) {
-        // SISTEM DALAM KRISIS
-        wasInCrisis = true; // Tandakan bahawa pemain berada dalam amaran
-        
+        // PERMIT KRISIS SEDANG BERLAKU (Denda & HP Potong)
         gameHealth -= 2;
         gamePenalty += 50;
         if (gameHealth < 0) gameHealth = 0;
 
         document.getElementById('gameEventBanner').className = "game-banner game-warning";
-        document.getElementById('gameEventBanner').innerHTML = "🚨 AMARAN: Export Berlaku! Turunkan Slider Solar/Irr untuk selamatkan grid!";
-    } else {
-        // SISTEM SELAMAT
-        // Jika sebelum ini dalam Krisis, dan SEKARANG dah selamat -> PEMAIN BERJAYA SELESAIKAN MASALAH!
-        if (wasInCrisis) {
-            gameScore += 100; // 🎯 GANJARAN MARKAH!
-            gameHealth = Math.min(100, gameHealth + 10); // ❤️ PULIHKAN HEALTH!
-            wasInCrisis = false; // Reset status krisis
+        document.getElementById('gameEventBanner').innerHTML = "🚨 AMARAN: Export Berlaku! Turunkan Slider Solar/Irr!";
+    } 
+    else {
+        // BILA SISTEM DALAM KEADAAN HIJAU / STABIL:
+        
+        // Cek: Adakah pemain BARU SAHAJA berjaya selesaikan krisis?
+        if (crisisActive) {
+            gameScore += 100; // 🎯 BERI MARKAH 100 DENGAN ADIL!
+            gameHealth = Math.min(100, gameHealth + 10); // ❤️ TAMBAH HEALTH
             
-            // Mesej Kejayaan
+            crisisActive = false; // RESET KRISIS! (Tutup krisis supaya score tidak bertambah pasif lagi)
+
             document.getElementById('gameEventBanner').className = "game-banner";
-            document.getElementById('gameEventBanner').innerHTML = "🎉 SYABAS! Krisis ditangani. +100 Markah & +10% Health!";
-        } else {
-            // Keadaan normal biasa (Tiada krisis) -> Tiada penambahan markah automatik
+            document.getElementById('gameEventBanner').innerHTML = "🎉 SYABAS! Krisis diselesaikan! +100 Markah!";
+        } 
+        else {
+            // KEADAAN PASIF (Biasa): Markah KEKAL, tiada apa-apa bertambah!
             document.getElementById('gameEventBanner').className = "game-banner";
-            document.getElementById('gameEventBanner').innerHTML = "🌤️ CUACA STABIL: Bersedia untuk perubahan cuaca seterusnya...";
+            document.getElementById('gameEventBanner').innerHTML = "🌤️ CUACA STABIL: Menunggu cabaran seterusnya...";
         }
     }
 }
+
+
+
 
 function updateGameUI() {
     document.getElementById('gameTimer').textContent = gameTimeLeft + "s";
