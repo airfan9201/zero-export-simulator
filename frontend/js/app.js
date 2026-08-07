@@ -391,6 +391,11 @@ document.addEventListener("DOMContentLoaded", () => {
 // ==========================================
 
 // 1. BANK SOALAN MODE BIASA (Khas Zero Export & Grid Rules)
+// ==========================================
+// QUIZ MASTER GAME (2 MODE: BASIC & ADVANCE)
+// ==========================================
+
+// 1. BANK SOALAN MODE BIASA (Khas Zero Export & Grid Rules - 25 Soalan)
 const basicQuizBank = [
     { q: "Apakah tujuan utama fungsi 'Zero Export' pada sistem Solar PV?", options: ["Memastikan tiada tenaga solar dijual ke grid TNB", "Menutup semua bekalan elektrik kilang", "Menaikkan voltan inverter ke tahap maksimum", "Menukar tenaga AC kepada DC secara automatik"], answer: 0 },
     { q: "Komponen manakah yang mengesan arah aliran arus untuk kawalan Zero Export?", options: ["Solar Panel", "Smart Meter / Power Meter", "DC Isolator", "Battery Inverter"], answer: 1 },
@@ -406,10 +411,22 @@ const basicQuizBank = [
     { q: "Mengapakah sistem 'Non-Conforming NEM / Zero Export' menjadi pilihan sesetengah kilang?", options: ["Kuota NEM sudah habis atau ingin mengelak syarat jualan semula tenaga", "Untuk membayar bil elektrik yang lebih mahal", "Sebab tidak mahu memasang inverter", "Sebab solar panel tidak perlu dibersihkan"], answer: 0 },
     { q: "Parameter manakah pada Inverter yang perlu diselaraskan semasa melakukan 'Inverter Curtailment'?", options: ["Active Power Limit (%)", "Voltan Input DC", "Sudut Fasa Asas", "Suhu Operasi Maximum"], answer: 0 },
     { q: "Protokol komunikasi manakah yang biasa digunakan antara Power Meter dan Inverter?", options: ["Modbus RTU / TCP", "Bluetooth Low Energy", "FM Radio", "Coaxial Cable"], answer: 0 },
-    { q: "Apakah yang dimaksudkan dengan istilah 'Self-Consumption' dalam sistem PV?", options: ["Menggunakan semua tenaga solar yang dijana untuk keperluan sendiri", "Menjual tenaga solar secara pukal", "Menyimpan tenaga solar dalam Grid", "Menggunakan penjana diesel secara berterusan"], answer: 0 }
+    { q: "Apakah yang dimaksudkan dengan istilah 'Self-Consumption' dalam sistem PV?", options: ["Menggunakan semua tenaga solar yang dijana untuk keperluan sendiri", "Menjual tenaga solar secara pukal", "Menyimpan tenaga solar dalam Grid", "Menggunakan penjana diesel secara berterusan"], answer: 0 },
+    
+    // 💥 10 SOALAN BAHARU DITAMBAH (MODE BIASA)
+    { q: "Lokasi terbaik untuk memasang Current Transformer (CT) Zero Export adalah di...", options: ["Titik kemasukan utama sebelum beban kilang (Main Point of Common Coupling)", "Tepi solar panel di atas bumbung", "Sisi bateri ganti", "Di dalam kotak soket pendingin air"], answer: 0 },
+    { q: "Apakah yang berlaku kepada skematik kuasa jika 'Load Drop' berlaku secara mendadak tetapi Response Time Inverter lambat?", options: ["Reverse Power Export sementara berlaku ke grid", "Kilang terputus bekalan terus", "Solar panel menghasilkan voltan negatif", "Bateri meletup secara automatik"], answer: 0 },
+    { q: "Apakah fungsi utama 'Zero Export Controller' berasingan jika Inverter tiada kawalan terbina?", options: ["Membaca data Smart Meter dan menghantar arahan kawalan kuasa ke Inverter", "Menukarkan arus AC ke DC secara manual", "Meningkatkan suhu sekeliling", "Membuat pembersihan automatik pada panel"], answer: 0 },
+    { q: "Sistem Zero Export mengurangkan kecekapan kewangan solar terutamanya apabila...", options: ["Beban kilang terlalu rendah pada waktu tengah hari berbanding potensi PV", "Suhu udara persekitaran sangat sejuk", "Hujan lebat sepanjang hari", "Voltan TNB berada pada paras tinggi"], answer: 0 },
+    { q: "Mengapakah 'Ramp Rate Control' penting dalam pengawal Zero Export?", options: ["Mengelak perubahan kuasa Inverter berlaku terlalu drastik yang menjejaskan kestabilan voltan", "Meningkatkan kelajuan fizikal angin", "Memastikan kabel DC tidak basah", "Menukar frekuensi grid kepada 60Hz"], answer: 0 },
+    { q: "Jika bacaan CT pada Smart Meter menunjukkan nilai 'Negative Power (-kW)', ini bermaksud...", options: ["Tenaga sedang mengeksport ke grid awam (Exporting)", "Kilang sedang mengambil kuasa tinggi dari grid", "Solar panel tidak menjana sebarang kuasa", "Bateri sedang kehabisan cas"], answer: 0 },
+    { q: "Berapakah kadar peratusan biasa 'Offset Buffer' yang disyorkan pada Inverter untuk langkah keselamatan?", options: ["1% - 5% daripada kapasiti inverter", "50% daripada kapasiti inverter", "100% daripada kapasiti inverter", "0% tanpa sebarang margin"], answer: 0 },
+    { q: "Di Malaysia, kelulusan pendaftaran sistem Zero Export biasanya diselia di bawah garis panduan...", options: ["Suruhanjaya Tenaga (ST) & TNB", "Kementerian Pengangkutan", "Jabatan Kerajaan Tempatan", "Jabatan Meteorologi Malaysia"], answer: 0 },
+    { q: "Apakah beza utama antara sistem 'NEM (Net Energy Metering)' dan 'Zero Export'?", options: ["NEM membenarkan jualan/kredit lebihan tenaga ke grid, Zero Export melarang sebarang lebihan ke grid", "NEM tidak memerlukan solar panel", "Zero Export menggunakan penjana arang batu", "NEM hanya berfungsi pada waktu malam"], answer: 0 },
+    { q: "Jika sambungan RS485 antara Power Meter dan Zero Export Controller terputus, apakah tindakan keselamatan automatik Inverter?", options: ["Mengurangkan output ke paras minimum/selamat (Fail-Safe Mode)", "Meletupkan litar utama", "Menaikkan kuasa ke 200%", "Mematikan bekalan elektrik seluruh daerah"], answer: 0 }
 ];
 
-// 2. BANK SOALAN MODE ADVANCE (Soalan Lebih Sukar & Skop Solar PV/Power Engineering Umum)
+// 2. BANK SOALAN MODE ADVANCE (Soalan Lebih Sukar & Power Engineering Umum - 30 Soalan)
 const advanceQuizBank = [
     { q: "Apakah piawaian Standard Test Conditions (STC) untuk ujian solar panel?", options: ["1000 W/m², 25°C, AM 1.5", "800 W/m², 35°C, AM 1.0", "1200 W/m², 0°C, AM 2.0", "500 W/m², 20°C, AM 1.5"], answer: 0 },
     { q: "Apakah singkatan bagi BESS dalam sistem tenaga baharu?", options: ["Battery Energy Storage System", "Basic Electrical Solar System", "Backup Energy Surge Safety", "Bi-directional Energy Smart Switch"], answer: 0 },
@@ -430,7 +447,19 @@ const advanceQuizBank = [
     { q: "Apakah alat yang digunakan untuk menguji ketahanan penebatan (insulation resistance) kabel solar?", options: ["Insulation Tester / Megger Tester", "Thermometer Gun", "Anemometer", "Lux Meter"], answer: 0 },
     { q: "Apakah maksud istilah 'Peak Sun Hours' (PSH)?", options: ["Jumlah jam seolah-olah irradiance berada pada tahap purata 1000 W/m² sehari", "Waktu tepat jam 12:00 tengah hari", "Suhu matahari mencapai tahap paling tinggi", "Waktu matahari terbit hingga terbenam"], answer: 0 },
     { q: "Mengapakah diod pintas (Bypass Diode) dipasang pada kotak simpang (junction box) panel solar?", options: ["Laluan arus alternatif jika sebahagian sel solar dihalang bayang (shading)", "Meningkatkan voltan AC kilang", "Mematikan sistem jika hujan", "Menghalang kilat daripada menyambar panel"], answer: 0 },
-    { q: "Apakah peranan Data Logger / Gateway dalam Loji Solar PV?", options: ["Mengumpul data prestasi dan menghantar ke Cloud / SCADA untuk pemantauan", "Menyimpan elektrik dalam bentuk digital", "Menukar kelajuan angin kepada kuasa watt", "Memotong rumput di kawasan tapak solar secara automatik"], answer: 0 }
+    { q: "Apakah peranan Data Logger / Gateway dalam Loji Solar PV?", options: ["Mengumpul data prestasi dan menghantar ke Cloud / SCADA untuk pemantauan", "Menyimpan elektrik dalam bentuk digital", "Menukar kelajuan angin kepada kuasa watt", "Memotong rumput di kawasan tapak solar secara automatik"], answer: 0 },
+
+    // 💥 10 SOALAN BAHARU DITAMBAH (MODE ADVANCE)
+    { q: "Apakah kesan 'Temperature Coefficient of Pmax' yang bernilai negatif (contoh: -0.35%/°C) pada panel solar?", options: ["Kuasa maksimum panel berkurang 0.35% bagi setiap kenaikan suhu 1°C melebihi 25°C", "Kuasa panel bertambah 0.35% apabila panas", "Suhu panel tidak memberi sebarang kesan", "Voltan panel menjadi stabil pada waktu malam"], answer: 0 },
+    { q: "Apakah beza utama antara Inverter String (String Inverter) dan Microinverter?", options: ["Microinverter dipasang pada setiap panel individu, manakala String Inverter menggabungkan berbilang panel dalam litar bersiri", "Microinverter menggunakan bahan bakar diesel", "String Inverter tidak mengeluarkan arus AC", "Microinverter hanya boleh digunakan pada pencawang tinggi"], answer: 0 },
+    { q: "Apakah fungsi 'Harmonic Filter' dalam sistem elektrik industri berkapasiti solar tinggi?", options: ["Mengurangkan gangguan herotan harmonik (THD) bagi mengekalkan kualiti kuasa", "Menolak habuk keluar daripada kawasan kilang", "Mengawal kelajuan kipas siling", "Memilih frekuensi radio untuk komunikasi"], answer: 0 },
+    { q: "Apakah maksud istilah 'Bifacial Solar Panel'?", options: ["Panel solar yang boleh menyerap cahaya dari bahagian hadapan dan belakang", "Panel solar yang boleh dilipat dua", "Panel solar yang menggunakan dua jenis bateri", "Panel solar yang bertukar warna mengikut cuaca"], answer: 0 },
+    { q: "Istilah 'LCOE' dalam analisis ekonomi tenaga baharu merujuk kepada...", options: ["Levelized Cost of Electricity", "Low Capacity Operating Energy", "Linear Current Output Efficiency", "Long Cycle Optimization Engineering"], answer: 0 },
+    { q: "Apakah yang dimaksudkan dengan fenomena 'PID' (Potential Induced Degradation) pada modul PV?", options: ["Kehilangan kuasa modul akibat kebocoran arus disebabkan beza keupayaan voltan tinggi ke ground", "Peningkatan berat fizikal panel akibat hujan", "Kerosakan fizikal rak solar akibat angin", "Panel menjadi terlalu berkilat"], answer: 0 },
+    { q: "Alat siapakah yang digunakan untuk mengambil gambar haba bagi mengesan 'Hotspots' pada modul solar?", options: ["Thermal Imaging Camera (Infrared Camera)", "Ultrasound Scanner", "Laser Distance Meter", "Multimeter biasa"], answer: 0 },
+    { q: "Apakah yang dimaksudkan dengan 'DC-to-AC Ratio' (atau Oversizing Ratio) dalam reka bentuk sistem PV?", options: ["Nisbah kapasiti puncak panel DC berbanding kapasiti rated AC Inverter", "Jumlah kabel DC bahagi kabel AC", "Saiz fizikal kotak inverter berbanding panel", "Nisbah bilangan fius DC kepada breaker AC"], answer: 0 },
+    { q: "Apakah peranan Transformer Pencawang (Step-Up Transformer) dalam loji solar skala besar (Large Scale Solar)?", options: ["Menaikkan voltan pengeluaran Inverter ke tahap voltan tinggi (MV/HV) untuk penghantaran ke grid", "Menurunkan voltan supaya menjadi 12V DC", "Mengecas bateri telefon pekerja", "Mematikan lampu jalan secara automatik"], answer: 0 },
+    { q: "Apakah kelebihan utama menggunakan 'Solar Tracker' berbanding struktur condong tetap (Fixed-Tilt)?", options: ["Mengikut pergerakan matahari untuk memaksimumkan tangkapan cahaya sepanjang hari", "Membuatkan panel solar bergerak lebih laju daripada angin", "Menjimatkan ruang kawasan tanah secara separuh", "Tidak memerlukan sebarang kabel elektrik"], answer: 0 }
 ];
 
 // Variable Permainan
