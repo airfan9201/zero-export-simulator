@@ -386,53 +386,37 @@ document.addEventListener("DOMContentLoaded", () => {
 // ==========================================
 // QUIZ MASTER GAME
 // ==========================================
-const quizData = [
-    {
-        q: "Apakah tujuan utama fungsi 'Zero Export' pada sistem Solar PV?",
-        options: [
-            "Memastikan tiada tenaga solar dijual ke grid TNB",
-            "Menutup semua bekalan elektrik kilang",
-            "Menaikkan voltan inverter ke tahap maksimum",
-            "Menukar tenaga AC kepada DC secara automatik"
-        ],
-        answer: 0
-    },
-    {
-        q: "Komponen manakah yang mengesan arah aliran arus untuk kawalan Zero Export?",
-        options: [
-            "Solar Panel",
-            "Smart Meter / Power Meter",
-            "DC Isolator",
-            "Battery Inverter"
-        ],
-        answer: 1
-    },
-    {
-        q: "Apa yang berlaku jika PV Generation melebihi Load Demand dalam mod Zero Export?",
-        options: [
-            "Sistem akan meletup",
-            "Inverter melakukan Curtailment (potong output)",
-            "Tenaga berlebihan disimpan dalam grid secara percuma",
-            "TNB akan beri denda serta-merta"
-        ],
-        answer: 1
-    },
-    {
-        q: "Mengapakah Offset Buffer (Margin) diperlukan dalam Zero Export?",
-        options: [
-            "Untuk menjimatkan bateri",
-            "Sebagai ruang keselamatan mengelak hardware latency",
-            "Untuk menaikkan harga tarif elektrik",
-            "Supaya solar panel sentiasa bersih"
-        ],
-        answer: 1
-    }
+// ==========================================
+// QUIZ MASTER GAME (100 BANK SOALAN - RANDOM 10)
+// ==========================================
+
+// Bank Soalan Utama (Anda boleh tambah lagi sehingga 100 soalan)
+const masterQuizBank = [
+    { q: "Apakah tujuan utama fungsi 'Zero Export' pada sistem Solar PV?", options: ["Memastikan tiada tenaga solar dijual ke grid TNB", "Menutup semua bekalan elektrik kilang", "Menaikkan voltan inverter ke tahap maksimum", "Menukar tenaga AC kepada DC secara automatik"], answer: 0 },
+    { q: "Komponen manakah yang mengesan arah aliran arus untuk kawalan Zero Export?", options: ["Solar Panel", "Smart Meter / Power Meter", "DC Isolator", "Battery Inverter"], answer: 1 },
+    { q: "Apa yang berlaku jika PV Generation melebihi Load Demand dalam mod Zero Export?", options: ["Sistem akan meletup", "Inverter melakukan Curtailment (potong output)", "Tenaga berlebihan disimpan dalam grid secara percuma", "TNB akan beri denda serta-merta"], answer: 1 },
+    { q: "Mengapakah Offset Buffer (Margin) diperlukan dalam Zero Export?", options: ["Untuk menjimatkan bateri", "Sebagai ruang keselamatan mengelak hardware latency", "Untuk menaikkan harga tarif elektrik", "Supaya solar panel sentiasa bersih"], answer: 1 },
+    { q: "Apakah maksud istilah 'Curtailment' dalam sistem solar?", options: ["Pembersihan solar panel", "Menghadkan pengeluaran kuasa inverter", "Pemasangan bateri simpanan", "Pemotongan kabel elektrik"], answer: 1 },
+    { q: "Unit apakah yang digunakan untuk mengukur Irradiance (Kepersangan Cahaya)?", options: ["kWh", "Volts", "W/m²", "Amperes"], answer: 2 },
+    { q: "Apakah kesan jika suhu solar panel terlalu tinggi?", options: ["Kecekapan (efficiency) panel menurun", "Kecekapan panel meningkat", "Inverter terbakar", "Tiada sebarang kesan"], answer: 0 },
+    { q: "Apakah fungsi Inverter dalam sistem PV?", options: ["Menukar kuasa DC kepada AC", "Menukar kuasa AC kepada DC", "Menyimpan tenaga elektrik", "Meningkatkan suhu panel"], answer: 0 },
+    { q: "Apakah risiko utama jika berlaku Reverse Power Flow ke grid tanpa kebenaran?", options: ["Mengenakan penalti/denda daripada TNB/ST", "Solar panel rosak", "Voltase rumah menjadi kosong", "Inverter menjadi lebih sejuk"], answer: 0 },
+    { q: "Istilah 'Latency' dalam pengawal Zero Export merujuk kepada?", options: ["Kelajuan angin", "Suhu persekitaran", "Masa tindak balas (delay) sistem mengesan & melaras kuasa", "Kapasiti bateri"], answer: 2 },
+    { q: "Apakah peranan utama CT (Current Transformer) dalam Zero Export?", options: ["Mengukur arus elektrik pada kabel utama", "Menjana elektrik solar", "Menyejukkan inverter", "Mengawal kelajuan kipas"], answer: 0 },
+    { q: "Jika Load Kilang ialah 50 kW dan Solar menghasilkan 30 kW, berapakah kuasa diambil dari Grid?", options: ["0 kW", "20 kW", "80 kW", "50 kW"], answer: 1 },
+    { q: "Jika Load Kilang ialah 20 kW dan Solar berpotensi hasilkan 40 kW, berapa kW perlu di-curtail dalam Zero Export?", options: ["0 kW", "10 kW", "20 kW", "40 kW"], answer: 2 },
+    { q: "Jenis arus yang dihasilkan oleh Solar Panel sebelum masuk ke Inverter ialah?", options: ["Arus Ulang-Alik (AC)", "Arus Direct (DC)", "Arus Magnetik", "Arus Gelombang"], answer: 1 },
+    { q: "Mod 'Grid-Tied' bermaksud inverter solar...", options: ["Beroperasi selari dengan grid bekalan awam", "Terputus terus daripada grid", "Hanya guna kuasa bateri", "Hanya berfungsi pada waktu malam"], answer: 0 }
+    // 💡 Nota: Anda boleh terus menambah objek soalan {q: "...", options: [...], answer: X} di sini sehingga 100 soalan!
 ];
 
+// Variable Permainan
+let activeQuizQuestions = [];
 let currentQIndex = 0;
 let quizScore = 0;
 let quizTimer = 15;
 let quizInterval = null;
+let userAnswersHistory = []; // Simpan sejarah jawapan pemain
 
 // Toggle Game Dashboard
 document.getElementById('gameModeToggle').addEventListener('change', function(e) {
@@ -451,9 +435,15 @@ document.getElementById('startQuizBtn').addEventListener('click', function() {
 });
 
 function startQuiz() {
+    // 1. Rawak & Pilih 10 Soalan sahaja dari Master Bank
+    const shuffled = [...masterQuizBank].sort(() => 0.5 - Math.random());
+    activeQuizQuestions = shuffled.slice(0, 10);
+
     currentQIndex = 0;
     quizScore = 0;
-    document.getElementById('quizScore').textContent = quizScore;
+    userAnswersHistory = [];
+    
+    document.getElementById('quizScore').textContent = `${quizScore} / 10`;
     document.getElementById('startQuizBtn').style.display = 'none';
     showQuestion();
 }
@@ -463,13 +453,19 @@ function showQuestion() {
     quizTimer = 15;
     document.getElementById('quizTimer').textContent = quizTimer + "s";
 
-    if (currentQIndex >= quizData.length) {
+    if (currentQIndex >= activeQuizQuestions.length) {
         endQuiz();
         return;
     }
 
-    const q = quizData[currentQIndex];
-    document.getElementById('quizQuestion').textContent = `${currentQIndex + 1}. ${q.q}`;
+    const q = activeQuizQuestions[currentQIndex];
+    
+    // Besarkan tulisan soalan (font-size: 20px)
+    const qElement = document.getElementById('quizQuestion');
+    qElement.style.fontSize = "20px";
+    qElement.style.lineHeight = "1.4";
+    qElement.style.fontWeight = "bold";
+    qElement.textContent = `Soalan ${currentQIndex + 1} dari 10: ${q.q}`;
     
     const optionsContainer = document.getElementById('quizOptions');
     optionsContainer.innerHTML = "";
@@ -477,6 +473,8 @@ function showQuestion() {
     q.options.forEach((opt, idx) => {
         const btn = document.createElement('button');
         btn.className = "quiz-opt-btn";
+        btn.style.fontSize = "16px"; // Besarkan teks pilihan jawapan
+        btn.style.padding = "14px 18px";
         btn.textContent = `${String.fromCharCode(65 + idx)}. ${opt}`;
         btn.onclick = () => checkAnswer(idx, btn);
         optionsContainer.appendChild(btn);
@@ -488,6 +486,8 @@ function showQuestion() {
         document.getElementById('quizTimer').textContent = quizTimer + "s";
         if (quizTimer <= 0) {
             clearInterval(quizInterval);
+            // Simpan jawapan sebagai Tidak Jawab (-1) jika masa tamat
+            userAnswersHistory.push({ question: q, selected: -1 });
             nextQuestion();
         }
     }, 1000);
@@ -495,22 +495,27 @@ function showQuestion() {
 
 function checkAnswer(selectedIdx, btnElement) {
     clearInterval(quizInterval);
-    const q = quizData[currentQIndex];
+    const q = activeQuizQuestions[currentQIndex];
     const allBtns = document.querySelectorAll('.quiz-opt-btn');
     
-    allBtns.forEach(b => b.onclick = null); // Nyahaktifkan butang selepas ditekan
+    allBtns.forEach(b => b.onclick = null); // Nyahaktifkan butang
+
+    // Simpan jawapan pemain
+    userAnswersHistory.push({
+        question: q,
+        selected: selectedIdx
+    });
 
     if (selectedIdx === q.answer) {
         btnElement.classList.add('correct');
-        let gained = 100 + (quizTimer * 10); // Bonus masa
-        quizScore += gained;
-        document.getElementById('quizScore').textContent = quizScore;
+        quizScore += 1; // 1 Markah sahaja
+        document.getElementById('quizScore').textContent = `${quizScore} / 10`;
     } else {
         btnElement.classList.add('wrong');
         allBtns[q.answer].classList.add('correct'); // Tunjuk jawapan betul
     }
 
-    setTimeout(nextQuestion, 1500);
+    setTimeout(nextQuestion, 1200);
 }
 
 function nextQuestion() {
@@ -520,20 +525,62 @@ function nextQuestion() {
 
 function endQuiz() {
     clearInterval(quizInterval);
-    document.getElementById('quizQuestion').innerHTML = `🎉 <b>TAHNIAH! QUIZ SELESAI!</b><br><br>Markah Akhir Anda: <span style="color: var(--primary); font-size: 24px;">${quizScore}</span>`;
-    document.getElementById('quizOptions').innerHTML = "";
     
+    // UI Penutup & Keputusan Markah
+    const qElement = document.getElementById('quizQuestion');
+    qElement.style.fontSize = "22px";
+    qElement.innerHTML = `🎉 <b>CABARAN KUIZ SELESAI!</b><br>Markah Anda: <span style="color: var(--primary); font-size: 28px;">${quizScore} / 10</span>`;
+
+    // Paparkan Laporan Jawapan (Review Mode)
+    const optionsContainer = document.getElementById('quizOptions');
+    optionsContainer.style.gridTemplateColumns = "1fr"; // Tukar layout jadi 1 kolum
+    optionsContainer.innerHTML = `<h4 style="margin: 15px 0 5px 0; color: #FFD54F;">📊 Semakan Jawapan:</h4>`;
+
+    userAnswersHistory.forEach((item, index) => {
+        const isCorrect = item.selected === item.question.answer;
+        const reviewBox = document.createElement('div');
+        reviewBox.style.cssText = `
+            background: var(--card);
+            border-left: 5px solid ${isCorrect ? '#4CAF50' : '#F44336'};
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            text-align: left;
+            font-size: 14px;
+        `;
+
+        let selectedText = item.selected === -1 ? " Masa Tamat (Tiada Jawapan)" : item.question.options[item.selected];
+        let correctText = item.question.options[item.question.answer];
+
+        reviewBox.innerHTML = `
+            <div style="font-weight: bold; font-size: 15px; margin-bottom: 5px;">
+                ${index + 1}. ${item.question.q}
+            </div>
+            <div style="color: ${isCorrect ? '#4CAF50' : '#FF5252'}; font-weight: bold;">
+                Jawapan Anda: ${selectedText} ${isCorrect ? '✅' : '❌'}
+            </div>
+            ${!isCorrect ? `<div style="color: #4CAF50; font-size: 13px; margin-top: 3px;"> Jawapan Betul: <b>${correctText}</b></div>` : ''}
+        `;
+        optionsContainer.appendChild(reviewBox);
+    });
+
     const startBtn = document.getElementById('startQuizBtn');
     startBtn.style.display = 'inline-block';
-    startBtn.textContent = "🔄 Main Semula";
+    startBtn.textContent = "🔄 Main Semula (10 Soalan Baharu)";
 }
 
 function resetQuiz() {
     clearInterval(quizInterval);
-    document.getElementById('quizQuestion').textContent = "Tekan butang di bawah untuk memulakan cabaran kuiz!";
-    document.getElementById('quizOptions').innerHTML = "";
+    const qElement = document.getElementById('quizQuestion');
+    qElement.style.fontSize = "18px";
+    qElement.textContent = "Tekan butang di bawah untuk memulakan cabaran kuiz!";
+    
+    const optionsContainer = document.getElementById('quizOptions');
+    optionsContainer.style.gridTemplateColumns = "1fr 1fr";
+    optionsContainer.innerHTML = "";
+
     document.getElementById('startQuizBtn').style.display = 'inline-block';
     document.getElementById('startQuizBtn').textContent = "▶️ Mula Kuiz";
-    document.getElementById('quizScore').textContent = "0";
+    document.getElementById('quizScore').textContent = "0 / 10";
     document.getElementById('quizTimer').textContent = "15s";
 }
