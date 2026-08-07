@@ -387,43 +387,33 @@ document.addEventListener("DOMContentLoaded", () => {
 // QUIZ MASTER GAME
 // ==========================================
 // ==========================================
-// QUIZ MASTER GAME (100 BANK SOALAN - RANDOM 10)
+// QUIZ MASTER GAME (2 MODE: BASIC & ADVANCE)
 // ==========================================
 
-// Bank Soalan Utama (Anda boleh tambah lagi sehingga 100 soalan)
-// Bank Soalan Utama (45 Soalan - Ditukar secara rawak 10 soalan setiap sesi)
-const masterQuizBank = [
-    // --- Set 1 hingga 25 (Soalan Sedia Ada) ---
+// 1. BANK SOALAN MODE BIASA (Khas Zero Export & Grid Rules)
+const basicQuizBank = [
     { q: "Apakah tujuan utama fungsi 'Zero Export' pada sistem Solar PV?", options: ["Memastikan tiada tenaga solar dijual ke grid TNB", "Menutup semua bekalan elektrik kilang", "Menaikkan voltan inverter ke tahap maksimum", "Menukar tenaga AC kepada DC secara automatik"], answer: 0 },
     { q: "Komponen manakah yang mengesan arah aliran arus untuk kawalan Zero Export?", options: ["Solar Panel", "Smart Meter / Power Meter", "DC Isolator", "Battery Inverter"], answer: 1 },
     { q: "Apa yang berlaku jika PV Generation melebihi Load Demand dalam mod Zero Export?", options: ["Sistem akan meletup", "Inverter melakukan Curtailment (potong output)", "Tenaga berlebihan disimpan dalam grid secara percuma", "TNB akan beri denda serta-merta"], answer: 1 },
     { q: "Mengapakah Offset Buffer (Margin) diperlukan dalam Zero Export?", options: ["Untuk menjimatkan bateri", "Sebagai ruang keselamatan mengelak hardware latency", "Untuk menaikkan harga tarif elektrik", "Supaya solar panel sentiasa bersih"], answer: 1 },
     { q: "Apakah maksud istilah 'Curtailment' dalam sistem solar?", options: ["Pembersihan solar panel", "Menghadkan pengeluaran kuasa inverter", "Pemasangan bateri simpanan", "Pemotongan kabel elektrik"], answer: 1 },
-    { q: "Unit apakah yang digunakan untuk mengukur Irradiance (Kepersangan Cahaya)?", options: ["kWh", "Volts", "W/m²", "Amperes"], answer: 2 },
-    { q: "Apakah kesan jika suhu solar panel terlalu tinggi?", options: ["Kecekapan (efficiency) panel menurun", "Kecekapan panel meningkat", "Inverter terbakar", "Tiada sebarang kesan"], answer: 0 },
-    { q: "Apakah fungsi Inverter dalam sistem PV?", options: ["Menukar kuasa DC kepada AC", "Menukar kuasa AC kepada DC", "Menyimpan tenaga elektrik", "Meningkatkan suhu panel"], answer: 0 },
     { q: "Apakah risiko utama jika berlaku Reverse Power Flow ke grid tanpa kebenaran?", options: ["Mengenakan penalti/denda daripada TNB/ST", "Solar panel rosak", "Voltase rumah menjadi kosong", "Inverter menjadi lebih sejuk"], answer: 0 },
     { q: "Istilah 'Latency' dalam pengawal Zero Export merujuk kepada?", options: ["Kelajuan angin", "Suhu persekitaran", "Masa tindak balas (delay) sistem mengesan & melaras kuasa", "Kapasiti bateri"], answer: 2 },
     { q: "Apakah peranan utama CT (Current Transformer) dalam Zero Export?", options: ["Mengukur arus elektrik pada kabel utama", "Menjana elektrik solar", "Menyejukkan inverter", "Mengawal kelajuan kipas"], answer: 0 },
     { q: "Jika Load Kilang ialah 50 kW dan Solar menghasilkan 30 kW, berapakah kuasa diambil dari Grid?", options: ["0 kW", "20 kW", "80 kW", "50 kW"], answer: 1 },
     { q: "Jika Load Kilang ialah 20 kW dan Solar berpotensi hasilkan 40 kW, berapa kW perlu di-curtail dalam Zero Export?", options: ["0 kW", "10 kW", "20 kW", "40 kW"], answer: 2 },
-    { q: "Jenis arus yang dihasilkan oleh Solar Panel sebelum masuk ke Inverter ialah?", options: ["Arus Ulang-Alik (AC)", "Arus Direct (DC)", "Arus Magnetik", "Arus Gelombang"], answer: 1 },
-    { q: "Mod 'Grid-Tied' bermaksud inverter solar...", options: ["Beroperasi selari dengan grid bekalan awam", "Terputus terus daripada grid", "Hanya guna kuasa bateri", "Hanya berfungsi pada waktu malam"], answer: 0 },
-    { q: "Apakah yang dimaksudkan dengan istilah 'Self-Consumption' dalam sistem PV?", options: ["Menggunakan semua tenaga solar yang dijana untuk keperluan sendiri", "Menjual tenaga solar secara pukal", "Menyimpan tenaga solar dalam Grid", "Menggunakan penjana diesel secara berterusan"], answer: 0 },
-    { q: "Protokol komunikasi manakah yang biasa digunakan antara Power Meter dan Inverter?", options: ["Modbus RTU / TCP", "Bluetooth Low Energy", "FM Radio", "Coaxial Cable"], answer: 0 },
-    { q: "Apakah fungsi utama 'Anti-Islanding Protection' pada inverter Grid-Tied?", options: ["Mematikan inverter secara automatik jika grid awam terputus (blackout)", "Memastikan inverter tidak basah apabila hujan", "Mengecas bateri dengan lebih cepat", "Meningkatkan kelajuan kipas penyejuk"], answer: 0 },
-    { q: "Apakah istilah bagi fenomena penurunan output solar akibat kepingan awan melepasi panel secara tiba-tiba?", options: ["Cloud Passing Effect", "Solar Flare Effect", "Over-voltage Effect", "Zero Drift Effect"], answer: 0 },
     { q: "Jika tetapan Offset Buffer dijatuhkan ke 0 kW, apakah risiko yang paling tinggi boleh berlaku?", options: ["Spillover / Reverse power export semasa kilang mengalami sudden load drop", "Inverter terus terbakar", "Solar panel berhenti beroperasi terus", "Voltan kilang jatuh ke 0V"], answer: 0 },
-    { q: "Kabel jenis apakah yang digunakan untuk menyambungkan Solar Panel ke Inverter?", options: ["Kabel DC Solar (Solar Cable)", "Kabel LAN Cat5", "Kabel Telefon", "Kabel Fiber Optik"], answer: 0 },
-    { q: "Apakah peranan Surging Protective Device (SPD) dalam sistem Solar PV?", options: ["Melindungi peralatan daripada lonjakan voltan akibat petir", "Mengukur jumlah kuasa yang dijana", "Meningkatkan kualiti frekuensi grid", "Mengubah kuasa AC kepada DC"], answer: 0 },
     { q: "Mengapakah sistem 'Non-Conforming NEM / Zero Export' menjadi pilihan sesetengah kilang?", options: ["Kuota NEM sudah habis atau ingin mengelak syarat jualan semula tenaga", "Untuk membayar bil elektrik yang lebih mahal", "Sebab tidak mahu memasang inverter", "Sebab solar panel tidak perlu dibersihkan"], answer: 0 },
     { q: "Parameter manakah pada Inverter yang perlu diselaraskan semasa melakukan 'Inverter Curtailment'?", options: ["Active Power Limit (%)", "Voltan Input DC", "Sudut Fasa Asas", "Suhu Operasi Maximum"], answer: 0 },
-    { q: "Apakah unit ukuran bagi Kapasiti Terpasang Solar Panel (DC Capacity)?", options: ["kWp (Kilo-Watt Peak)", "kWh (Kilo-Watt Hour)", "kVA (Kilo-Volt Ampere)", "kVAr (Kilo-Volt Ampere Reactive)"], answer: 0 },
+    { q: "Protokol komunikasi manakah yang biasa digunakan antara Power Meter dan Inverter?", options: ["Modbus RTU / TCP", "Bluetooth Low Energy", "FM Radio", "Coaxial Cable"], answer: 0 },
+    { q: "Apakah yang dimaksudkan dengan istilah 'Self-Consumption' dalam sistem PV?", options: ["Menggunakan semua tenaga solar yang dijana untuk keperluan sendiri", "Menjual tenaga solar secara pukal", "Menyimpan tenaga solar dalam Grid", "Menggunakan penjana diesel secara berterusan"], answer: 0 }
+];
 
-    // --- 🚀 20 SOALAN BAHARU DITAMBAH (Soalan 26 hingga 45) ---
+// 2. BANK SOALAN MODE ADVANCE (Soalan Lebih Sukar & Skop Solar PV/Power Engineering Umum)
+const advanceQuizBank = [
     { q: "Apakah piawaian Standard Test Conditions (STC) untuk ujian solar panel?", options: ["1000 W/m², 25°C, AM 1.5", "800 W/m², 35°C, AM 1.0", "1200 W/m², 0°C, AM 2.0", "500 W/m², 20°C, AM 1.5"], answer: 0 },
     { q: "Apakah singkatan bagi BESS dalam sistem tenaga baharu?", options: ["Battery Energy Storage System", "Basic Electrical Solar System", "Backup Energy Surge Safety", "Bi-directional Energy Smart Switch"], answer: 0 },
-    { q: "Dalam Zero Export, apakah fungsi BESS jika berlaku PV Generation berlebihan?", options: ["Menyimpan tenaga berlebihan tersebut daripada melakukan Curtailment", "Mematikan kuasa elektrik satu bangunan", "Menaikkan voltan grid TNB", "Membuang tenaga sebagai haba"], answer: 0 },
+    { q: "Dalam sistem Hybrid, apakah fungsi BESS jika berlaku PV Generation berlebihan?", options: ["Menyimpan tenaga berlebihan tersebut daripada melakukan Curtailment", "Mematikan kuasa elektrik satu bangunan", "Menaikkan voltan grid TNB", "Membuang tenaga sebagai haba"], answer: 0 },
     { q: "Apakah maksud istilah 'Performance Ratio' (PR) dalam sistem Solar PV?", options: ["Nisbah antara tenaga sebenar yang dihasilkan berbanding potensi teori", "Kelajuan inverter memproses data", "Masa yang diambil untuk membersihkan panel", "Jumlah denda yang dikenakan oleh grid"], answer: 0 },
     { q: "Manakah antara berikut MERUPAKAN punca utama berlakunya 'Voltage Unbalance' dalam sistem 3-fasa?", options: ["Pengagihan beban (load) yang tidak seimbang pada fasa R, Y, B", "Penggunaan solar panel yang terlalu bersih", "Penggunaan kabel elektrik yang terlalu tebal", "Suhu inverter yang sejuk"], answer: 0 },
     { q: "Apakah fungsi utama MPPT (Maximum Power Point Tracking) dalam inverter?", options: ["Mencari titik kuasa maksimum yang boleh dikeluarkan oleh solar panel pada sebarang cuaca", "Mengunci voltan supaya sentiasa 240V", "Mengukur jarak antara solar panel dan matahari", "Mengurangkan saiz fizikal inverter"], answer: 0 },
@@ -434,7 +424,7 @@ const masterQuizBank = [
     { q: "Berapakah frekuensi standard grid elektrik di Malaysia (TNB)?", options: ["50 Hz", "60 Hz", "100 Hz", "120 Hz"], answer: 0 },
     { q: "Apakah nilai Power Factor (PF) ideal yang diharapkan oleh utiliti seperti TNB?", options: ["Menghampiri 1.0 (Unity)", "Kurang daripada 0.55", "Sama dengan 0.00", "Lebih daripada 2.50"], answer: 0 },
     { q: "Apakah itu 'Soiling Loss' dalam penyenggaraan Solar PV?", options: ["Kehilangan tenaga akibat habuk, kotoran, atau tahi burung di atas panel", "Kehilangan tenaga akibat kabel bawah tanah yang lembap", "Kerosakan pada struktur bumbung", "Kehilangan voltan pada bateri"], answer: 0 },
-    { q: "Mengapakah Inverter Central biasanya diletakkan di dalam bilik khas bertawa dingin (air-conditioned)?", options: ["Mengelakkan kepanasan melampau (thermal derating) dan memanjangkan jangka hayat", "Supaya bunyi kipas tidak kedengaran", "Kerana inverter tidak boleh terkena cahaya matahari langsung", "Supaya operator boleh berehat di dalamnya"], answer: 0 },
+    { q: "Apakah fungsi utama 'Anti-Islanding Protection' pada inverter Grid-Tied?", options: ["Mematikan inverter secara automatik jika grid awam terputus (blackout)", "Memastikan inverter tidak basah apabila hujan", "Mengecas bateri dengan lebih cepat", "Meningkatkan kelajuan kipas penyejuk"], answer: 0 },
     { q: "Apakah maksud istilah 'DOD' dalam spesifikasi bateri simpanan solar?", options: ["Depth of Discharge", "Direct Output Driver", "Daily Operating Duration", "Double Power Distribution"], answer: 0 },
     { q: "Apakah faedah utama menggunakan teknologi N-Type TOPCon atau HJT pada panel solar moden?", options: ["Kecekapan lebih tinggi dan kadar degradasi (degradation rate) lebih rendah", "Harganya Percuma", "Boleh menghasilkan tenaga pada waktu malam tanpa lampu", "Panel tidak memerlukan sebarang kabel"], answer: 0 },
     { q: "Apakah alat yang digunakan untuk menguji ketahanan penebatan (insulation resistance) kabel solar?", options: ["Insulation Tester / Megger Tester", "Thermometer Gun", "Anemometer", "Lux Meter"], answer: 0 },
@@ -449,7 +439,7 @@ let currentQIndex = 0;
 let quizScore = 0;
 let quizTimer = 15;
 let quizInterval = null;
-let userAnswersHistory = []; // Simpan sejarah jawapan pemain
+let userAnswersHistory = [];
 
 // Toggle Game Dashboard
 document.getElementById('gameModeToggle').addEventListener('change', function(e) {
@@ -468,16 +458,23 @@ document.getElementById('startQuizBtn').addEventListener('click', function() {
 });
 
 function startQuiz() {
-    // 1. Rawak & Pilih 10 Soalan sahaja dari Master Bank
-    const shuffled = [...masterQuizBank].sort(() => 0.5 - Math.random());
+    // 1. Semak Mode Pilihan Pemain (Basic vs Advance)
+    const selectedMode = document.querySelector('input[name="quizMode"]:checked').value;
+    const targetBank = (selectedMode === 'advance') ? advanceQuizBank : basicQuizBank;
+
+    // 2. Rawak & Pilih 10 Soalan dari Bank yang dipilih
+    const shuffled = [...targetBank].sort(() => 0.5 - Math.random());
     activeQuizQuestions = shuffled.slice(0, 10);
 
     currentQIndex = 0;
     quizScore = 0;
     userAnswersHistory = [];
     
+    // Sembunyikan Pilihan Mode bila game sudah bermula
+    document.getElementById('quizModeSelect').style.display = 'none';
     document.getElementById('quizScore').textContent = `${quizScore} / 10`;
     document.getElementById('startQuizBtn').style.display = 'none';
+    
     showQuestion();
 }
 
@@ -493,7 +490,6 @@ function showQuestion() {
 
     const q = activeQuizQuestions[currentQIndex];
     
-    // Besarkan tulisan soalan (font-size: 20px)
     const qElement = document.getElementById('quizQuestion');
     qElement.style.fontSize = "20px";
     qElement.style.lineHeight = "1.4";
@@ -506,7 +502,7 @@ function showQuestion() {
     q.options.forEach((opt, idx) => {
         const btn = document.createElement('button');
         btn.className = "quiz-opt-btn";
-        btn.style.fontSize = "16px"; // Besarkan teks pilihan jawapan
+        btn.style.fontSize = "16px";
         btn.style.padding = "14px 18px";
         btn.textContent = `${String.fromCharCode(65 + idx)}. ${opt}`;
         btn.onclick = () => checkAnswer(idx, btn);
@@ -519,7 +515,6 @@ function showQuestion() {
         document.getElementById('quizTimer').textContent = quizTimer + "s";
         if (quizTimer <= 0) {
             clearInterval(quizInterval);
-            // Simpan jawapan sebagai Tidak Jawab (-1) jika masa tamat
             userAnswersHistory.push({ question: q, selected: -1 });
             nextQuestion();
         }
@@ -531,9 +526,8 @@ function checkAnswer(selectedIdx, btnElement) {
     const q = activeQuizQuestions[currentQIndex];
     const allBtns = document.querySelectorAll('.quiz-opt-btn');
     
-    allBtns.forEach(b => b.onclick = null); // Nyahaktifkan butang
+    allBtns.forEach(b => b.onclick = null);
 
-    // Simpan jawapan pemain
     userAnswersHistory.push({
         question: q,
         selected: selectedIdx
@@ -541,11 +535,11 @@ function checkAnswer(selectedIdx, btnElement) {
 
     if (selectedIdx === q.answer) {
         btnElement.classList.add('correct');
-        quizScore += 1; // 1 Markah sahaja
+        quizScore += 1;
         document.getElementById('quizScore').textContent = `${quizScore} / 10`;
     } else {
         btnElement.classList.add('wrong');
-        allBtns[q.answer].classList.add('correct'); // Tunjuk jawapan betul
+        allBtns[q.answer].classList.add('correct');
     }
 
     setTimeout(nextQuestion, 1200);
@@ -559,14 +553,12 @@ function nextQuestion() {
 function endQuiz() {
     clearInterval(quizInterval);
     
-    // UI Penutup & Keputusan Markah
     const qElement = document.getElementById('quizQuestion');
     qElement.style.fontSize = "22px";
     qElement.innerHTML = `🎉 <b>CABARAN KUIZ SELESAI!</b><br>Markah Anda: <span style="color: var(--primary); font-size: 28px;">${quizScore} / 10</span>`;
 
-    // Paparkan Laporan Jawapan (Review Mode)
     const optionsContainer = document.getElementById('quizOptions');
-    optionsContainer.style.gridTemplateColumns = "1fr"; // Tukar layout jadi 1 kolum
+    optionsContainer.style.gridTemplateColumns = "1fr";
     optionsContainer.innerHTML = `<h4 style="margin: 15px 0 5px 0; color: #FFD54F;">📊 Semakan Jawapan:</h4>`;
 
     userAnswersHistory.forEach((item, index) => {
@@ -599,14 +591,18 @@ function endQuiz() {
 
     const startBtn = document.getElementById('startQuizBtn');
     startBtn.style.display = 'inline-block';
-    startBtn.textContent = "🔄 Main Semula (10 Soalan Baharu)";
+    startBtn.textContent = "🔄 Main Semula";
 }
 
 function resetQuiz() {
     clearInterval(quizInterval);
+    
+    // Tunjukkan semula radio button pilihan mode
+    document.getElementById('quizModeSelect').style.display = 'flex';
+
     const qElement = document.getElementById('quizQuestion');
     qElement.style.fontSize = "18px";
-    qElement.textContent = "Tekan butang di bawah untuk memulakan cabaran kuiz!";
+    qElement.textContent = "Pilih Mode dan tekan butang di bawah untuk memulakan cabaran kuiz!";
     
     const optionsContainer = document.getElementById('quizOptions');
     optionsContainer.style.gridTemplateColumns = "1fr 1fr";

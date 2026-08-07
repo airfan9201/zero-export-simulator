@@ -114,21 +114,33 @@
 
 			<!-- 3. GAME DASHBOARD (Hanya muncul bila Game Mode dibuka) -->
 			<!-- GAME DASHBOARD: QUIZ MASTER -->
+			<!-- GAME DASHBOARD: QUIZ MASTER -->
 			<div id="gameDashboard" class="hideDisplay" style="background: var(--inner-container); padding: 20px; border-radius: 10px; border: 1px solid #FFD54F; margin-top: 15px;">
 				
 				<!-- Header Game -->
-				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-					<h3 style="color: #FFD54F; margin: 0;">🎯 Zero Export Quiz Master</h3>
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
+					<h3 style="color: #FFD54F; margin: 0;">🎯 Solar & Zero Export Quiz Master</h3>
 					<div style="font-weight: bold; font-size: 16px;">
-						🏆 Score: <span id="quizScore" style="color: var(--primary);">0</span> | 
+						🏆 Score: <span id="quizScore" style="color: var(--primary);">0 / 10</span> | 
 						⏱️ Masa: <span id="quizTimer" style="color: #FF5252;">15s</span>
 					</div>
 				</div>
 
-				<!-- Container Soalan (Akan ditukar secara dinamik via JS) -->
+				<!-- 🎮 PILIHAN MODE KUIZ -->
+				<div id="quizModeSelect" style="display: flex; gap: 15px; align-items: center; background: var(--card); padding: 12px; border-radius: 8px; margin-bottom: 15px;">
+					<span style="font-weight: bold; font-size: 14px;">Pilih Tahap Mod:</span>
+					<label style="cursor: pointer; font-size: 14px;">
+						<input type="radio" name="quizMode" value="basic" checked> 🟢 Mode Biasa (Fokus Zero Export)
+					</label>
+					<label style="cursor: pointer; font-size: 14px;">
+						<input type="radio" name="quizMode" value="advance"> 🔴 Mode Advance (Solar PV & Power Engineering)
+					</label>
+				</div>
+
+				<!-- Container Soalan -->
 				<div id="quizContent">
-					<div id="quizQuestion" style="font-size: 18px; font-weight: bold; margin-bottom: 15px;">
-						Tekan butang di bawah untuk memulakan cabaran kuiz!
+					<div id="quizQuestion" style="font-size: 20px; font-weight: bold; margin-bottom: 15px; line-height: 1.4;">
+						Pilih Mode dan tekan butang di bawah untuk memulakan cabaran kuiz!
 					</div>
 
 					<!-- Pilihan Jawapan -->
@@ -143,8 +155,7 @@
 						▶️ Mula Kuiz
 					</button>
 				</div>
-			</div>
-			
+			</div>			
 			
 		</section>
 
