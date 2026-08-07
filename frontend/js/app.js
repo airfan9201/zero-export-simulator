@@ -408,6 +408,17 @@ const masterQuizBank = [
     { q: "Jenis arus yang dihasilkan oleh Solar Panel sebelum masuk ke Inverter ialah?", options: ["Arus Ulang-Alik (AC)", "Arus Direct (DC)", "Arus Magnetik", "Arus Gelombang"], answer: 1 },
     { q: "Mod 'Grid-Tied' bermaksud inverter solar...", options: ["Beroperasi selari dengan grid bekalan awam", "Terputus terus daripada grid", "Hanya guna kuasa bateri", "Hanya berfungsi pada waktu malam"], answer: 0 }
     // 💡 Nota: Anda boleh terus menambah objek soalan {q: "...", options: [...], answer: X} di sini sehingga 100 soalan!
+	
+	{ q: "Apakah yang dimaksudkan dengan istilah 'Self-Consumption' dalam sistem PV?", options: ["Menggunakan semua tenaga solar yang dijana untuk keperluan sendiri", "Menjual tenaga solar secara pukal", "Menyimpan tenaga solar dalam Grid", "Menggunakan penjana diesel secara berterusan"], answer: 0 },
+    { q: "Protokol komunikasi manakah yang biasa digunakan antara Power Meter dan Inverter?", options: ["Modbus RTU / TCP", "Bluetooth Low Energy", "FM Radio", "Coaxial Cable"], answer: 0 },
+    { q: "Apakah fungsi utama 'Anti-Islanding Protection' pada inverter Grid-Tied?", options: ["Mematikan inverter secara automatik jika grid awam terputus (blackout)", "Memastikan inverter tidak basah apabila hujan", "Mengecas bateri dengan lebih cepat", "Meningkatkan kelajuan kipas penyejuk"], answer: 0 },
+    { q: "Apakah istilah bagi fenomena penurunan output solar akibat kepingan awan melepasi panel secara tiba-tiba?", options: ["Cloud Passing Effect", "Solar Flare Effect", "Over-voltage Effect", "Zero Drift Effect"], answer: 0 },
+    { q: "Jika tetapan Offset Buffer dijatuhkan ke 0 kW, apakah risiko yang paling tinggi boleh berlaku?", options: ["Spillover / Reverse power export semasa kilang mengalami sudden load drop", "Inverter terus terbakar", "Solar panel berhenti beroperasi terus", "Voltan kilang jatuh ke 0V"], answer: 0 },
+    { q: "Kabel jenis apakah yang digunakan untuk menyambungkan Solar Panel ke Inverter?", options: ["Kabel DC Solar (Solar Cable)", "Kabel LAN Cat5", "Kabel Telefon", "Kabel Fiber Optik"], answer: 0 },
+    { q: "Apakah peranan Surging Protective Device (SPD) dalam sistem Solar PV?", options: ["Melindungi peralatan daripada lonjakan voltan akibat petir", "Mengukur jumlah kuasa yang dijana", "Meningkatkan kualiti frekuensi grid", "Mengubah kuasa AC kepada DC"], answer: 0 },
+    { q: "Mengapakah sistem 'Non-Conforming NEM / Zero Export' menjadi pilihan sesetengah kilang?", options: ["Kuota NEM sudah habis atau ingin mengelak syarat jualan semula tenaga", "Untuk membayar bil elektrik yang lebih mahal", "Sebab tidak mahu memasang inverter", "Sebab solar panel tidak perlu dibersihkan"], answer: 0 },
+    { q: "Parameter manakah pada Inverter yang perlu diselaraskan semasa melakukan 'Inverter Curtailment'?", options: ["Active Power Limit (%)", "Voltan Input DC", "Sudut Fasa Asas", "Suhu Operasi Maximum"], answer: 0 },
+    { q: "Apakah unit ukuran bagi Kapasiti Terpasang Solar Panel (DC Capacity)?", options: ["kWp (Kilo-Watt Peak)", "kWh (Kilo-Watt Hour)", "kVA (Kilo-Volt Ampere)", "kVAr (Kilo-Volt Ampere Reactive)"], answer: 0 }
 ];
 
 // Variable Permainan
