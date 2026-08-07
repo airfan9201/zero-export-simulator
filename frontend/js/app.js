@@ -446,33 +446,44 @@ function startGame() {
 }
 
 function triggerRandomEvent() {
-    // 1. Cari butang Sudden Load Drop yang sedia ada
-    const btnLoadDrop = document.getElementById('btn-load_drop');
-    
-    // 2. Paksa tekan butang senario ralat
-    if (btnLoadDrop) {
-        document.getElementById('gameEventBanner').innerHTML = "🚨 EMERGENCY: Sudden Load Drop! Power is Exporting to Grid!";
-        btnLoadDrop.click(); // Ini akan paksa simulator jadi MERAH / EXPORT
+    // Tukar peristiwa rawak kepada arahan bahasa Melayu yang sangat ringkas
+    const loadSlider = document.getElementById('loadSlider');
+    const irrSlider = document.getElementById('irrSlider');
+
+    // 50% peluang untuk krisis berlaku (supaya pemain ada masa bernafas)
+    const isCrisis = Math.random() < 0.5;
+
+    if (isCrisis) {
+        // PERISTIWA: Solar Terlebih (Pemain kena kurangkan slider!)
+        if (irrSlider) {
+            irrSlider.value = 1000; // Naikkan solar ke maks
+            irrSlider.dispatchEvent(new Event('input'));
+        }
+        document.getElementById('gameEventBanner').className = "game-banner game-warning";
+        document.getElementById('gameEventBanner').innerHTML = "🚨 AMARAN: Solar Terlalu Tinggi! Perlahankan Slider Solar/Irr untuk hentikan Export!";
+    } else {
+        // PERISTIWA: Stabil
+        document.getElementById('gameEventBanner').className = "game-banner";
+        document.getElementById('gameEventBanner').innerHTML = "🌤️ CUACA STABIL: Pastikan status kekal Hijau untuk kumpul markah!";
     }
 }
 
 function checkZeroExportCompliance() {
-    // Semak sama ada butang/skematik/status mempunyai ralat atau merah
-    const isExporting = document.querySelector('.status-export') || 
-                        document.querySelector('.status-error') || 
-                        document.body.innerText.includes('EXPORT');
+    // Cari elemen kuasa Grid
+    const gridValElem = document.getElementById('flow-grid-val');
+    let gridText = gridValElem ? gridValElem.textContent : "";
+    
+    // Semak sama ada ada perkataan EXPORT / nilai negatif (Terkuar ke TNB)
+    const isExporting = gridText.includes('EXPORT') || gridText.includes('-') || document.querySelector('.status-export');
 
     if (isExporting) {
-        // JIKA EXPORT (MERAH): Potong Health & Denda! NO SCORE!
-        gameHealth -= 5;
-        gamePenalty += 100;
+        // JIKA MERAH: Denda & HP Potong
+        gameHealth -= 2;
+        gamePenalty += 50;
         if (gameHealth < 0) gameHealth = 0;
-
-        document.getElementById('gameEventBanner').className = "game-banner game-warning";
     } else {
-        // HANYA BILA SELAMAT (HIJAU): Tambah Score!
-        gameScore += 20;
-        document.getElementById('gameEventBanner').className = "game-banner";
+        // JIKA HIJAU: Tambah Markah
+        gameScore += 10;
     }
 }
 
