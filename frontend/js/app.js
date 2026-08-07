@@ -446,52 +446,65 @@ function startGame() {
 }
 
 function triggerRandomEvent() {
+    // Senarai cabaran yang memaksa pemain bertindak!
     const events = [
-        { msg: "🌤️ Weather Condition: Stable Sunlight.", pvDelta: 0, loadDelta: 0 },
-        { msg: "☁️ Cloud Passing! Solar generation drops!", pvDelta: -15, loadDelta: 0 },
-        { msg: "🏭 Factory Heavy Machine Turned ON! Load increases!", pvDelta: 0, loadDelta: 20 },
-        { msg: "⚠️ Sudden Machine Shutdown! Load dropped drastically!", pvDelta: 0, loadDelta: -25 },
-        { msg: "☀️ Clear Sky! Maximum Solar Irradiance!", pvDelta: 20, loadDelta: 0 }
+        { 
+            msg: "⚠️ SUDDEN LOAD DROP! Kilang tutup mesin! Mengakibatkan Solar Terlebih (Export Alert)!", 
+            pvDelta: 20, 
+            loadDelta: -40 
+        },
+        { 
+            msg: "☀️ HOT SUNBURST! Solar memuncak tiba-tiba! Kurangkan Inverter Limit!", 
+            pvDelta: 35, 
+            loadDelta: 0 
+        },
+        { 
+            msg: "☁️ CLOUD COVER! Solar jatuh teruk, Kilang guna Grid Power sepenuhnya!", 
+            pvDelta: -30, 
+            loadDelta: 10 
+        }
     ];
 
     const randomEvt = events[Math.floor(Math.random() * events.length)];
     document.getElementById('gameEventBanner').innerHTML = randomEvt.msg;
 
-    // Laraskan slider irradiance / load secara automatik untuk beri cabaran kepada pemain
+    // Paksa Ubah Slider supaya Berlaku Krisis!
     const loadSlider = document.getElementById('loadSlider');
     const irrSlider = document.getElementById('irrSlider');
 
     if (loadSlider && randomEvt.loadDelta !== 0) {
         let newLoad = Math.max(10, Math.min(100, parseInt(loadSlider.value) + randomEvt.loadDelta));
         loadSlider.value = newLoad;
-        loadSlider.dispatchEvent(new Event('input'));
+        loadSlider.dispatchEvent(new Event('input')); // Paksa trigger pengiraan backend
     }
 
     if (irrSlider && randomEvt.pvDelta !== 0) {
         let newIrr = Math.max(200, Math.min(1000, parseInt(irrSlider.value) + (randomEvt.pvDelta * 10)));
         irrSlider.value = newIrr;
-        irrSlider.dispatchEvent(new Event('input'));
+        irrSlider.dispatchEvent(new Event('input')); // Paksa trigger pengiraan backend
     }
 }
 
 function checkZeroExportCompliance() {
-    // Ambil nilai Grid Power terkini dari UI / backend
+    // Ambil elemen status atau nilai grid
     const gridValElem = document.getElementById('flow-grid-val');
     if (!gridValElem) return;
 
     let gridValText = gridValElem.textContent || "0";
-    let gridPower = parseFloat(gridValText);
-
-    // Sekiranya terdapat EXPORT ke Grid (Nilai negatif atau status EXPORT)
-    const isExporting = gridValText.includes('EXPORT') || gridPower < -0.1;
+    
+    // Semak sama ada sistem sedang EXPORT (Punca Ralat)
+    // Cth: Jika status bertukar warna Merah / mengandungi perkataan EXPORT / nilai negatif
+    const isExporting = gridValText.includes('EXPORT') || gridValText.includes('-') || document.querySelector('.status-export');
 
     if (isExporting) {
-        gameHealth -= 5;
-        gamePenalty += 100;
+        // JIKA BERLAKU EXPORT: Potong HP & Denda! TIADA SCORE DIBERI!
+        gameHealth -= 10;
+        gamePenalty += 200;
         document.getElementById('gameEventBanner').className = "game-banner game-warning";
-        document.getElementById('gameEventBanner').innerHTML = "🚨 EXPORT DETECTED! Grid Penalty Applied (-RM100)!";
+        document.getElementById('gameEventBanner').innerHTML = "🚨 CRITICAL: POWER EXPORTING TO GRID! SELAMATKAN SISTEM SEGERA!";
     } else {
-        gameScore += 10;
+        // HANYA DAPAAT SCORE BILA SISTEM SELAMAT (ZERO EXPORT STABLE)
+        gameScore += 50; 
         document.getElementById('gameEventBanner').className = "game-banner";
     }
 }
