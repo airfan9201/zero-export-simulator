@@ -4,13 +4,7 @@ const API_URL = "https://zero-export-simulator.onrender.com/simulate";
 let powerChart = null;
 
 // ================= GAME MODE VARIABLES =================
-let isGameMode = false;
-let gameInterval = null;
-let gameTimeLeft = 60;
-let gameScore = 0;
-let gameHealth = 100;
-let gamePenalty = 0;
-let isGameRunning = false;
+
 
 // ==========================================
 // 1. INSIALISASI & KEMASKINI CHART.JS
@@ -389,142 +383,157 @@ document.addEventListener("DOMContentLoaded", () => {
     applyScenario('normal');
 });
 
+// ==========================================
+// QUIZ MASTER GAME
+// ==========================================
+const quizData = [
+    {
+        q: "Apakah tujuan utama fungsi 'Zero Export' pada sistem Solar PV?",
+        options: [
+            "Memastikan tiada tenaga solar dijual ke grid TNB",
+            "Menutup semua bekalan elektrik kilang",
+            "Menaikkan voltan inverter ke tahap maksimum",
+            "Menukar tenaga AC kepada DC secara automatik"
+        ],
+        answer: 0
+    },
+    {
+        q: "Komponen manakah yang mengesan arah aliran arus untuk kawalan Zero Export?",
+        options: [
+            "Solar Panel",
+            "Smart Meter / Power Meter",
+            "DC Isolator",
+            "Battery Inverter"
+        ],
+        answer: 1
+    },
+    {
+        q: "Apa yang berlaku jika PV Generation melebihi Load Demand dalam mod Zero Export?",
+        options: [
+            "Sistem akan meletup",
+            "Inverter melakukan Curtailment (potong output)",
+            "Tenaga berlebihan disimpan dalam grid secara percuma",
+            "TNB akan beri denda serta-merta"
+        ],
+        answer: 1
+    },
+    {
+        q: "Mengapakah Offset Buffer (Margin) diperlukan dalam Zero Export?",
+        options: [
+            "Untuk menjimatkan bateri",
+            "Sebagai ruang keselamatan mengelak hardware latency",
+            "Untuk menaikkan harga tarif elektrik",
+            "Supaya solar panel sentiasa bersih"
+        ],
+        answer: 1
+    }
+];
+
+let currentQIndex = 0;
+let quizScore = 0;
+let quizTimer = 15;
+let quizInterval = null;
+
 // Toggle Game Dashboard
 document.getElementById('gameModeToggle').addEventListener('change', function(e) {
-    isGameMode = e.target.checked;
     const gameDash = document.getElementById('gameDashboard');
-    
-    if (isGameMode) {
+    if (e.target.checked) {
         gameDash.classList.remove('hideDisplay');
     } else {
         gameDash.classList.add('hideDisplay');
-        stopGame();
+        resetQuiz();
     }
 });
 
-// Start Game Button Listener
-document.getElementById('startGameBtn').addEventListener('click', function() {
-    if (!isGameRunning) {
-        startGame();
-    } else {
-        stopGame();
-    }
+// Listener untuk butang Start Quiz
+document.getElementById('startQuizBtn').addEventListener('click', function() {
+    startQuiz();
 });
 
-function startGame() {
-    isGameRunning = true;
-    gameTimeLeft = 60;
-    gameScore = 0;
-    gameHealth = 100;
-    gamePenalty = 0;
+function startQuiz() {
+    currentQIndex = 0;
+    quizScore = 0;
+    document.getElementById('quizScore').textContent = quizScore;
+    document.getElementById('startQuizBtn').style.display = 'none';
+    showQuestion();
+}
+
+function showQuestion() {
+    clearInterval(quizInterval);
+    quizTimer = 15;
+    document.getElementById('quizTimer').textContent = quizTimer + "s";
+
+    if (currentQIndex >= quizData.length) {
+        endQuiz();
+        return;
+    }
+
+    const q = quizData[currentQIndex];
+    document.getElementById('quizQuestion').textContent = `${currentQIndex + 1}. ${q.q}`;
     
-    document.getElementById('startGameBtn').textContent = "⏹️ Stop Challenge";
-    document.getElementById('startGameBtn').style.background = "#F44336";
-    
-    updateGameUI();
+    const optionsContainer = document.getElementById('quizOptions');
+    optionsContainer.innerHTML = "";
 
-    // Loop Setiap 1 Saat
-    gameInterval = setInterval(() => {
-        gameTimeLeft--;
-        
-        // Simulasi Cuaca & Beban Rawak Setiap 5 Saat
-        if (gameTimeLeft % 5 === 0) {
-            triggerRandomEvent();
-        }
+    q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = "quiz-opt-btn";
+        btn.textContent = `${String.fromCharCode(65 + idx)}. ${opt}`;
+        btn.onclick = () => checkAnswer(idx, btn);
+        optionsContainer.appendChild(btn);
+    });
 
-        // Semak Keadaan Export (Kunci Logik Zero Export)
-        checkZeroExportCompliance();
-
-        // Kemaskini UI Game
-        updateGameUI();
-
-        // Semak Syarat Tamat Game
-        if (gameTimeLeft <= 0 || gameHealth <= 0) {
-            endGame();
+    // Timer Countdown 15s
+    quizInterval = setInterval(() => {
+        quizTimer--;
+        document.getElementById('quizTimer').textContent = quizTimer + "s";
+        if (quizTimer <= 0) {
+            clearInterval(quizInterval);
+            nextQuestion();
         }
     }, 1000);
 }
 
+function checkAnswer(selectedIdx, btnElement) {
+    clearInterval(quizInterval);
+    const q = quizData[currentQIndex];
+    const allBtns = document.querySelectorAll('.quiz-opt-btn');
+    
+    allBtns.forEach(b => b.onclick = null); // Nyahaktifkan butang selepas ditekan
 
-
-
-let crisisActive = false; 
-
-function triggerRandomEvent() {
-    // Hanya cetuskan krisis kalau tiada krisis aktif
-    if (!crisisActive) {
-        crisisActive = true; 
-
-        // Paksa krisis dengan ubah nilai slider SOLAR secara fizikal
-        const irrSlider = document.getElementById('irrSlider');
-        if (irrSlider) {
-            irrSlider.value = 1000; // Simulasi panas terik
-            // Kita KETIK (trigger) event input secara manual
-            irrSlider.dispatchEvent(new Event('input')); 
-        }
-
-        document.getElementById('gameEventBanner').className = "game-banner game-warning";
-        document.getElementById('gameEventBanner').innerHTML = "🚨 AMARAN: Solar Terlalu Tinggi! Kena turunkan Slider Irradiance di bawah 500 W/m²!";
-    }
-}
-
-function checkZeroExportCompliance() {
-    const irrSlider = document.getElementById('irrSlider');
-    if (!irrSlider) return;
-
-    let currentIrr = parseInt(irrSlider.value);
-
-    // KOD UTAMA: Kita tentukan sendiri syarat selamat berdasarkan NILAI SLIDER PEMAIN!
-    // Syarat: Jika krisis aktif DAN slider solar masih > 500, krisis MASIH BERLANGSUNG.
-    if (crisisActive) {
-        if (currentIrr > 500) {
-            // PEMAIN BELUM TURUNKAN SLIDER: Denda & Potong Health!
-            gameHealth -= 2;
-            gamePenalty += 50;
-            if (gameHealth < 0) gameHealth = 0;
-
-            document.getElementById('gameEventBanner').className = "game-banner game-warning";
-            document.getElementById('gameEventBanner').innerHTML = "🚨 AMARAN: Tarik slider Solar/Irr di bawah 500 W/m² sekarang!";
-        } else {
-            // PEMAIN DAH KANSER/TURUNKAN SLIDER DI BAWAH 500: BERJAYA!
-            gameScore += 100; // Beri markah
-            gameHealth = Math.min(100, gameHealth + 10); // Pulihkan HP
-            
-            crisisActive = false; // Matikan krisis!
-
-            document.getElementById('gameEventBanner').className = "game-banner";
-            document.getElementById('gameEventBanner').innerHTML = "🎉 SYABAS! Anda berjaya turunkan slider. +100 Markah!";
-        }
+    if (selectedIdx === q.answer) {
+        btnElement.classList.add('correct');
+        let gained = 100 + (quizTimer * 10); // Bonus masa
+        quizScore += gained;
+        document.getElementById('quizScore').textContent = quizScore;
     } else {
-        // KEADAAN NORMAL (Tiada Krisis)
-        document.getElementById('gameEventBanner').className = "game-banner";
-        document.getElementById('gameEventBanner').innerHTML = "🌤️ CUACA STABIL: Bersedia untuk amaran seterusnya...";
+        btnElement.classList.add('wrong');
+        allBtns[q.answer].classList.add('correct'); // Tunjuk jawapan betul
     }
+
+    setTimeout(nextQuestion, 1500);
 }
 
-
-
-
-
-function updateGameUI() {
-    document.getElementById('gameTimer').textContent = gameTimeLeft + "s";
-    document.getElementById('gameScore').textContent = gameScore;
-    document.getElementById('gameHealth').textContent = Math.max(0, gameHealth) + "%";
-    document.getElementById('gamePenalty').textContent = "RM " + gamePenalty;
+function nextQuestion() {
+    currentQIndex++;
+    showQuestion();
 }
 
-function stopGame() {
-    clearInterval(gameInterval);
-    isGameRunning = false;
-    document.getElementById('startGameBtn').textContent = "▶️ Start Challenge";
-    document.getElementById('startGameBtn').style.background = "var(--primary-dark)";
+function endQuiz() {
+    clearInterval(quizInterval);
+    document.getElementById('quizQuestion').innerHTML = `🎉 <b>TAHNIAH! QUIZ SELESAI!</b><br><br>Markah Akhir Anda: <span style="color: var(--primary); font-size: 24px;">${quizScore}</span>`;
+    document.getElementById('quizOptions').innerHTML = "";
+    
+    const startBtn = document.getElementById('startQuizBtn');
+    startBtn.style.display = 'inline-block';
+    startBtn.textContent = "🔄 Main Semula";
 }
 
-function endGame() {
-    stopGame();
-    if (gameHealth > 0) {
-        alert(`🎉 CHALLENGE COMPLETED!\n\nFinal Score: ${gameScore}\nTotal Fines: RM ${gamePenalty}\nGrid Integrity: ${gameHealth}%`);
-    } else {
-        alert(`💥 GAME OVER!\n\nGrid Health depleted due to continuous Export violations.\nTotal Penalty: RM ${gamePenalty}`);
-    }
+function resetQuiz() {
+    clearInterval(quizInterval);
+    document.getElementById('quizQuestion').textContent = "Tekan butang di bawah untuk memulakan cabaran kuiz!";
+    document.getElementById('quizOptions').innerHTML = "";
+    document.getElementById('startQuizBtn').style.display = 'inline-block';
+    document.getElementById('startQuizBtn').textContent = "▶️ Mula Kuiz";
+    document.getElementById('quizScore').textContent = "0";
+    document.getElementById('quizTimer').textContent = "15s";
 }

@@ -113,36 +113,39 @@
 			</div>
 
 			<!-- 3. GAME DASHBOARD (Hanya muncul bila Game Mode dibuka) -->
+			<!-- GAME DASHBOARD: QUIZ MASTER -->
 			<div id="gameDashboard" class="hideDisplay" style="background: var(--inner-container); padding: 20px; border-radius: 10px; border: 1px solid #FFD54F; margin-top: 15px;">
-				<h3 style="color: #FFD54F; margin-bottom: 15px;">🎮 Grid Protection Challenge</h3>
 				
-				<div class="game-stats-grid">
-					<div class="game-stat-card">
-						<span class="stat-title">⏳ Time Remaining</span>
-						<span class="stat-value" id="gameTimer">60s</span>
-					</div>
-					<div class="game-stat-card">
-						<span class="stat-title">🏆 Score</span>
-						<span class="stat-value" id="gameScore">0</span>
-					</div>
-					<div class="game-stat-card">
-						<span class="stat-title">❤️ Grid Health</span>
-						<span class="stat-value" id="gameHealth">100%</span>
-					</div>
-					<div class="game-stat-card">
-						<span class="stat-title">⚡ Penalty Fines</span>
-						<span class="stat-value" id="gamePenalty" style="color: #F44336;">RM 0</span>
+				<!-- Header Game -->
+				<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+					<h3 style="color: #FFD54F; margin: 0;">🎯 Zero Export Quiz Master</h3>
+					<div style="font-weight: bold; font-size: 16px;">
+						🏆 Score: <span id="quizScore" style="color: var(--primary);">0</span> | 
+						⏱️ Masa: <span id="quizTimer" style="color: #FF5252;">15s</span>
 					</div>
 				</div>
 
-				<div id="gameEventBanner" class="game-banner" style="margin-top: 15px; padding: 12px; background: var(--card); border-radius: 6px; text-align: center; font-weight: bold;">
-					🌤️ Weather Condition: Stable Sunlight. Keep Zero Export active!
+				<!-- Container Soalan (Akan ditukar secara dinamik via JS) -->
+				<div id="quizContent">
+					<div id="quizQuestion" style="font-size: 18px; font-weight: bold; margin-bottom: 15px;">
+						Tekan butang di bawah untuk memulakan cabaran kuiz!
+					</div>
+
+					<!-- Pilihan Jawapan -->
+					<div id="quizOptions" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+						<!-- Button jawapan akan dijana automatik oleh JS -->
+					</div>
 				</div>
 
-				<div style="margin-top: 15px; text-align: center;">
-					<button id="startGameBtn" class="scenario-btn" style="background: var(--primary-dark); color: white; padding: 10px 25px; font-size: 16px;">▶️ Start Challenge</button>
+				<!-- Footer Controls -->
+				<div style="text-align: center; margin-top: 15px;">
+					<button id="startQuizBtn" class="scenario-btn" style="background: var(--primary-dark); color: white; padding: 10px 25px; font-size: 16px;">
+						▶️ Mula Kuiz
+					</button>
 				</div>
 			</div>
+			
+			
 		</section>
 
 	<!-- ================= POWER FLOW SCHEMATIC ================= -->

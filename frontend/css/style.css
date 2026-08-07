@@ -626,3 +626,33 @@ input:checked + .slider:before {
   animation: flashRed 1s infinite;
   color: #FF5252 !important;
 }
+
+/* Quiz Option Buttons */
+.quiz-opt-btn {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s ease;
+}
+
+.quiz-opt-btn:hover {
+    background: var(--primary-light);
+    border-color: var(--primary);
+}
+
+.quiz-opt-btn.correct {
+    background: #4CAF50 !important;
+    color: white !important;
+    border-color: #388E3C !important;
+}
+
+.quiz-opt-btn.wrong {
+    background: #F44336 !important;
+    color: white !important;
+    border-color: #D32F2F !important;
+}
