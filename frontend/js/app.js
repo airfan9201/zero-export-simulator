@@ -391,7 +391,9 @@ document.addEventListener("DOMContentLoaded", () => {
 // ==========================================
 
 // Bank Soalan Utama (Anda boleh tambah lagi sehingga 100 soalan)
+// Bank Soalan Utama (45 Soalan - Ditukar secara rawak 10 soalan setiap sesi)
 const masterQuizBank = [
+    // --- Set 1 hingga 25 (Soalan Sedia Ada) ---
     { q: "Apakah tujuan utama fungsi 'Zero Export' pada sistem Solar PV?", options: ["Memastikan tiada tenaga solar dijual ke grid TNB", "Menutup semua bekalan elektrik kilang", "Menaikkan voltan inverter ke tahap maksimum", "Menukar tenaga AC kepada DC secara automatik"], answer: 0 },
     { q: "Komponen manakah yang mengesan arah aliran arus untuk kawalan Zero Export?", options: ["Solar Panel", "Smart Meter / Power Meter", "DC Isolator", "Battery Inverter"], answer: 1 },
     { q: "Apa yang berlaku jika PV Generation melebihi Load Demand dalam mod Zero Export?", options: ["Sistem akan meletup", "Inverter melakukan Curtailment (potong output)", "Tenaga berlebihan disimpan dalam grid secara percuma", "TNB akan beri denda serta-merta"], answer: 1 },
@@ -406,10 +408,8 @@ const masterQuizBank = [
     { q: "Jika Load Kilang ialah 50 kW dan Solar menghasilkan 30 kW, berapakah kuasa diambil dari Grid?", options: ["0 kW", "20 kW", "80 kW", "50 kW"], answer: 1 },
     { q: "Jika Load Kilang ialah 20 kW dan Solar berpotensi hasilkan 40 kW, berapa kW perlu di-curtail dalam Zero Export?", options: ["0 kW", "10 kW", "20 kW", "40 kW"], answer: 2 },
     { q: "Jenis arus yang dihasilkan oleh Solar Panel sebelum masuk ke Inverter ialah?", options: ["Arus Ulang-Alik (AC)", "Arus Direct (DC)", "Arus Magnetik", "Arus Gelombang"], answer: 1 },
-    { q: "Mod 'Grid-Tied' bermaksud inverter solar...", options: ["Beroperasi selari dengan grid bekalan awam", "Terputus terus daripada grid", "Hanya guna kuasa bateri", "Hanya berfungsi pada waktu malam"], answer: 0 }
-    // 💡 Nota: Anda boleh terus menambah objek soalan {q: "...", options: [...], answer: X} di sini sehingga 100 soalan!
-	
-	{ q: "Apakah yang dimaksudkan dengan istilah 'Self-Consumption' dalam sistem PV?", options: ["Menggunakan semua tenaga solar yang dijana untuk keperluan sendiri", "Menjual tenaga solar secara pukal", "Menyimpan tenaga solar dalam Grid", "Menggunakan penjana diesel secara berterusan"], answer: 0 },
+    { q: "Mod 'Grid-Tied' bermaksud inverter solar...", options: ["Beroperasi selari dengan grid bekalan awam", "Terputus terus daripada grid", "Hanya guna kuasa bateri", "Hanya berfungsi pada waktu malam"], answer: 0 },
+    { q: "Apakah yang dimaksudkan dengan istilah 'Self-Consumption' dalam sistem PV?", options: ["Menggunakan semua tenaga solar yang dijana untuk keperluan sendiri", "Menjual tenaga solar secara pukal", "Menyimpan tenaga solar dalam Grid", "Menggunakan penjana diesel secara berterusan"], answer: 0 },
     { q: "Protokol komunikasi manakah yang biasa digunakan antara Power Meter dan Inverter?", options: ["Modbus RTU / TCP", "Bluetooth Low Energy", "FM Radio", "Coaxial Cable"], answer: 0 },
     { q: "Apakah fungsi utama 'Anti-Islanding Protection' pada inverter Grid-Tied?", options: ["Mematikan inverter secara automatik jika grid awam terputus (blackout)", "Memastikan inverter tidak basah apabila hujan", "Mengecas bateri dengan lebih cepat", "Meningkatkan kelajuan kipas penyejuk"], answer: 0 },
     { q: "Apakah istilah bagi fenomena penurunan output solar akibat kepingan awan melepasi panel secara tiba-tiba?", options: ["Cloud Passing Effect", "Solar Flare Effect", "Over-voltage Effect", "Zero Drift Effect"], answer: 0 },
@@ -418,7 +418,29 @@ const masterQuizBank = [
     { q: "Apakah peranan Surging Protective Device (SPD) dalam sistem Solar PV?", options: ["Melindungi peralatan daripada lonjakan voltan akibat petir", "Mengukur jumlah kuasa yang dijana", "Meningkatkan kualiti frekuensi grid", "Mengubah kuasa AC kepada DC"], answer: 0 },
     { q: "Mengapakah sistem 'Non-Conforming NEM / Zero Export' menjadi pilihan sesetengah kilang?", options: ["Kuota NEM sudah habis atau ingin mengelak syarat jualan semula tenaga", "Untuk membayar bil elektrik yang lebih mahal", "Sebab tidak mahu memasang inverter", "Sebab solar panel tidak perlu dibersihkan"], answer: 0 },
     { q: "Parameter manakah pada Inverter yang perlu diselaraskan semasa melakukan 'Inverter Curtailment'?", options: ["Active Power Limit (%)", "Voltan Input DC", "Sudut Fasa Asas", "Suhu Operasi Maximum"], answer: 0 },
-    { q: "Apakah unit ukuran bagi Kapasiti Terpasang Solar Panel (DC Capacity)?", options: ["kWp (Kilo-Watt Peak)", "kWh (Kilo-Watt Hour)", "kVA (Kilo-Volt Ampere)", "kVAr (Kilo-Volt Ampere Reactive)"], answer: 0 }
+    { q: "Apakah unit ukuran bagi Kapasiti Terpasang Solar Panel (DC Capacity)?", options: ["kWp (Kilo-Watt Peak)", "kWh (Kilo-Watt Hour)", "kVA (Kilo-Volt Ampere)", "kVAr (Kilo-Volt Ampere Reactive)"], answer: 0 },
+
+    // --- 🚀 20 SOALAN BAHARU DITAMBAH (Soalan 26 hingga 45) ---
+    { q: "Apakah piawaian Standard Test Conditions (STC) untuk ujian solar panel?", options: ["1000 W/m², 25°C, AM 1.5", "800 W/m², 35°C, AM 1.0", "1200 W/m², 0°C, AM 2.0", "500 W/m², 20°C, AM 1.5"], answer: 0 },
+    { q: "Apakah singkatan bagi BESS dalam sistem tenaga baharu?", options: ["Battery Energy Storage System", "Basic Electrical Solar System", "Backup Energy Surge Safety", "Bi-directional Energy Smart Switch"], answer: 0 },
+    { q: "Dalam Zero Export, apakah fungsi BESS jika berlaku PV Generation berlebihan?", options: ["Menyimpan tenaga berlebihan tersebut daripada melakukan Curtailment", "Mematikan kuasa elektrik satu bangunan", "Menaikkan voltan grid TNB", "Membuang tenaga sebagai haba"], answer: 0 },
+    { q: "Apakah maksud istilah 'Performance Ratio' (PR) dalam sistem Solar PV?", options: ["Nisbah antara tenaga sebenar yang dihasilkan berbanding potensi teori", "Kelajuan inverter memproses data", "Masa yang diambil untuk membersihkan panel", "Jumlah denda yang dikenakan oleh grid"], answer: 0 },
+    { q: "Manakah antara berikut MERUPAKAN punca utama berlakunya 'Voltage Unbalance' dalam sistem 3-fasa?", options: ["Pengagihan beban (load) yang tidak seimbang pada fasa R, Y, B", "Penggunaan solar panel yang terlalu bersih", "Penggunaan kabel elektrik yang terlalu tebal", "Suhu inverter yang sejuk"], answer: 0 },
+    { q: "Apakah fungsi utama MPPT (Maximum Power Point Tracking) dalam inverter?", options: ["Mencari titik kuasa maksimum yang boleh dikeluarkan oleh solar panel pada sebarang cuaca", "Mengunci voltan supaya sentiasa 240V", "Mengukur jarak antara solar panel dan matahari", "Mengurangkan saiz fizikal inverter"], answer: 0 },
+    { q: "Apakah yang berlaku kepada rintangan (resistance) kabel jika saiz keratan rentas (cross-section area) dinaikkan?", options: ["Rintangan berkurang (kurang voltage drop)", "Rintangan meningkat", "Rintangan menjadi kosong terus", "Tiada sebarang perubahan"], answer: 0 },
+    { q: "Apakah istilah bagi faktor kehilangan kuasa akibat haba pada kabel AC/DC?", options: ["I²R Losses (Copper Losses)", "Shadowing Losses", "Soiling Losses", "Clipping Losses"], answer: 0 },
+    { q: "Apakah fenomena 'Inverter Clipping'?", options: ["Output DC solar melebihi kapasiti maksimum AC inverter menyebabkan graf puncak rata", "Kabel solar terpotong secara fizikal", "Litar pintas pada papan agihan", "Kipas penyejuk inverter berhenti berfungsi"], answer: 0 },
+    { q: "Apakah tujuan 'Earthing / Grounding' pada struktur rak solar dan rangka inverter?", options: ["Keselamatan pengguna daripada kejutan elektrik dan kilat", "Meningkatkan pengeluaran voltan solar", "Mengelakkan solar panel daripada berhabuk", "Menukar warna rangka solar"], answer: 0 },
+    { q: "Berapakah frekuensi standard grid elektrik di Malaysia (TNB)?", options: ["50 Hz", "60 Hz", "100 Hz", "120 Hz"], answer: 0 },
+    { q: "Apakah nilai Power Factor (PF) ideal yang diharapkan oleh utiliti seperti TNB?", options: ["Menghampiri 1.0 (Unity)", "Kurang daripada 0.55", "Sama dengan 0.00", "Lebih daripada 2.50"], answer: 0 },
+    { q: "Apakah itu 'Soiling Loss' dalam penyenggaraan Solar PV?", options: ["Kehilangan tenaga akibat habuk, kotoran, atau tahi burung di atas panel", "Kehilangan tenaga akibat kabel bawah tanah yang lembap", "Kerosakan pada struktur bumbung", "Kehilangan voltan pada bateri"], answer: 0 },
+    { q: "Mengapakah Inverter Central biasanya diletakkan di dalam bilik khas bertawa dingin (air-conditioned)?", options: ["Mengelakkan kepanasan melampau (thermal derating) dan memanjangkan jangka hayat", "Supaya bunyi kipas tidak kedengaran", "Kerana inverter tidak boleh terkena cahaya matahari langsung", "Supaya operator boleh berehat di dalamnya"], answer: 0 },
+    { q: "Apakah maksud istilah 'DOD' dalam spesifikasi bateri simpanan solar?", options: ["Depth of Discharge", "Direct Output Driver", "Daily Operating Duration", "Double Power Distribution"], answer: 0 },
+    { q: "Apakah faedah utama menggunakan teknologi N-Type TOPCon atau HJT pada panel solar moden?", options: ["Kecekapan lebih tinggi dan kadar degradasi (degradation rate) lebih rendah", "Harganya Percuma", "Boleh menghasilkan tenaga pada waktu malam tanpa lampu", "Panel tidak memerlukan sebarang kabel"], answer: 0 },
+    { q: "Apakah alat yang digunakan untuk menguji ketahanan penebatan (insulation resistance) kabel solar?", options: ["Insulation Tester / Megger Tester", "Thermometer Gun", "Anemometer", "Lux Meter"], answer: 0 },
+    { q: "Apakah maksud istilah 'Peak Sun Hours' (PSH)?", options: ["Jumlah jam seolah-olah irradiance berada pada tahap purata 1000 W/m² sehari", "Waktu tepat jam 12:00 tengah hari", "Suhu matahari mencapai tahap paling tinggi", "Waktu matahari terbit hingga terbenam"], answer: 0 },
+    { q: "Mengapakah diod pintas (Bypass Diode) dipasang pada kotak simpang (junction box) panel solar?", options: ["Laluan arus alternatif jika sebahagian sel solar dihalang bayang (shading)", "Meningkatkan voltan AC kilang", "Mematikan sistem jika hujan", "Menghalang kilat daripada menyambar panel"], answer: 0 },
+    { q: "Apakah peranan Data Logger / Gateway dalam Loji Solar PV?", options: ["Mengumpul data prestasi dan menghantar ke Cloud / SCADA untuk pemantauan", "Menyimpan elektrik dalam bentuk digital", "Menukar kelajuan angin kepada kuasa watt", "Memotong rumput di kawasan tapak solar secara automatik"], answer: 0 }
 ];
 
 // Variable Permainan
