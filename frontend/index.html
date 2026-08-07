@@ -89,7 +89,9 @@
 		<section class="panel">
 			<h2>Training Scenarios</h2>
 			<p style="margin-bottom: 15px; color: var(--text-secondary);">Select a pre-configured scenario to test system response:</p>
-			<div style="display: flex; gap: 10px; flex-wrap: wrap;">
+			
+			<!-- 1. BUTANG SENARIO SEDIA ADA -->
+			<div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;">
 				<button class="scenario-btn active" id="btn-normal" onclick="applyScenario('normal', this)">☀️ Normal Operation</button>
 				<button class="scenario-btn" id="btn-load_drop" onclick="applyScenario('load_drop', this)">
 					⚠️ Sudden Load Drop 
@@ -97,6 +99,49 @@
 				</button>
 				<button class="scenario-btn" id="btn-cloud" onclick="applyScenario('cloud', this)">☁️ Cloud Passing</button>
 				<button class="scenario-btn" id="btn-offset_test" onclick="applyScenario('offset_test', this)">🛡️ Offset Protection</button>
+			</div>
+
+			<hr style="border: 0; border-top: 1px solid var(--border); margin: 20px 0;">
+
+			<!-- 2. TOGGLE GAME MODE (DISITUSKAN DI SINI) -->
+			<div class="game-toggle-container" style="display: flex; align-items: center; gap: 12px; margin-bottom: 15px;">
+				<label class="switch">
+					<input type="checkbox" id="gameModeToggle">
+					<span class="slider round"></span>
+				</label>
+				<span class="toggle-label" style="font-weight: bold; font-size: 16px;">🎮 Activate Game Mode (Zero Export Challenge)</span>
+			</div>
+
+			<!-- 3. GAME DASHBOARD (Hanya muncul bila Game Mode dibuka) -->
+			<div id="gameDashboard" class="hideDisplay" style="background: var(--inner-container); padding: 20px; border-radius: 10px; border: 1px solid #FFD54F; margin-top: 15px;">
+				<h3 style="color: #FFD54F; margin-bottom: 15px;">🎮 Grid Protection Challenge</h3>
+				
+				<div class="game-stats-grid">
+					<div class="game-stat-card">
+						<span class="stat-title">⏳ Time Remaining</span>
+						<span class="stat-value" id="gameTimer">60s</span>
+					</div>
+					<div class="game-stat-card">
+						<span class="stat-title">🏆 Score</span>
+						<span class="stat-value" id="gameScore">0</span>
+					</div>
+					<div class="game-stat-card">
+						<span class="stat-title">❤️ Grid Health</span>
+						<span class="stat-value" id="gameHealth">100%</span>
+					</div>
+					<div class="game-stat-card">
+						<span class="stat-title">⚡ Penalty Fines</span>
+						<span class="stat-value" id="gamePenalty" style="color: #F44336;">RM 0</span>
+					</div>
+				</div>
+
+				<div id="gameEventBanner" class="game-banner" style="margin-top: 15px; padding: 12px; background: var(--card); border-radius: 6px; text-align: center; font-weight: bold;">
+					🌤️ Weather Condition: Stable Sunlight. Keep Zero Export active!
+				</div>
+
+				<div style="margin-top: 15px; text-align: center;">
+					<button id="startGameBtn" class="scenario-btn" style="background: var(--primary-dark); color: white; padding: 10px 25px; font-size: 16px;">▶️ Start Challenge</button>
+				</div>
 			</div>
 		</section>
 

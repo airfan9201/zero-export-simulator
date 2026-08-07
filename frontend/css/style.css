@@ -535,3 +535,94 @@ body {
         grid-template-columns: 1fr; /* Bertukar menjadi 1 lajur atas-bawah pada skrin kecil */
     }
 }
+
+/* ================= GAME MODE STYLING ================= */
+
+/* Toggle Switch Styling */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #555;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: var(--primary-dark);
+}
+
+input:checked + .slider:before {
+  transform: translateX(24px);
+}
+
+/* Game Stats Grid */
+.game-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px;
+}
+
+.game-stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.stat-title {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.stat-value {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--primary);
+}
+
+.game-banner {
+  border: 1px solid var(--border);
+  transition: background 0.3s, color 0.3s;
+}
+
+/* Warning Flash untuk Game Over / Penalty */
+@keyframes flashRed {
+  0% { background-color: rgba(244, 67, 54, 0.2); }
+  50% { background-color: rgba(244, 67, 54, 0.6); }
+  100% { background-color: rgba(244, 67, 54, 0.2); }
+}
+
+.game-warning {
+  animation: flashRed 1s infinite;
+  color: #FF5252 !important;
+}

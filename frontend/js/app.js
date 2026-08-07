@@ -3,6 +3,15 @@ const API_URL = "https://zero-export-simulator.onrender.com/simulate";
 // Variable global untuk simpan instance chart
 let powerChart = null;
 
+// ================= GAME MODE VARIABLES =================
+let isGameMode = false;
+let gameInterval = null;
+let gameTimeLeft = 60;
+let gameScore = 0;
+let gameHealth = 100;
+let gamePenalty = 0;
+let isGameRunning = false;
+
 // ==========================================
 // 1. INSIALISASI & KEMASKINI CHART.JS
 // ==========================================
@@ -379,3 +388,133 @@ document.addEventListener("DOMContentLoaded", () => {
 	// Panggil senario normal secara automatik pada waktu reload
     applyScenario('normal');
 });
+
+// Toggle Game Dashboard
+document.getElementById('gameModeToggle').addEventListener('change', function(e) {
+    isGameMode = e.target.checked;
+    const gameDash = document.getElementById('gameDashboard');
+    
+    if (isGameMode) {
+        gameDash.classList.remove('hideDisplay');
+    } else {
+        gameDash.classList.add('hideDisplay');
+        stopGame();
+    }
+});
+
+// Start Game Button Listener
+document.getElementById('startGameBtn').addEventListener('click', function() {
+    if (!isGameRunning) {
+        startGame();
+    } else {
+        stopGame();
+    }
+});
+
+function startGame() {
+    isGameRunning = true;
+    gameTimeLeft = 60;
+    gameScore = 0;
+    gameHealth = 100;
+    gamePenalty = 0;
+    
+    document.getElementById('startGameBtn').textContent = "⏹️ Stop Challenge";
+    document.getElementById('startGameBtn').style.background = "#F44336";
+    
+    updateGameUI();
+
+    // Loop Setiap 1 Saat
+    gameInterval = setInterval(() => {
+        gameTimeLeft--;
+        
+        // Simulasi Cuaca & Beban Rawak Setiap 5 Saat
+        if (gameTimeLeft % 5 === 0) {
+            triggerRandomEvent();
+        }
+
+        // Semak Keadaan Export (Kunci Logik Zero Export)
+        checkZeroExportCompliance();
+
+        // Kemaskini UI Game
+        updateGameUI();
+
+        // Semak Syarat Tamat Game
+        if (gameTimeLeft <= 0 || gameHealth <= 0) {
+            endGame();
+        }
+    }, 1000);
+}
+
+function triggerRandomEvent() {
+    const events = [
+        { msg: "🌤️ Weather Condition: Stable Sunlight.", pvDelta: 0, loadDelta: 0 },
+        { msg: "☁️ Cloud Passing! Solar generation drops!", pvDelta: -15, loadDelta: 0 },
+        { msg: "🏭 Factory Heavy Machine Turned ON! Load increases!", pvDelta: 0, loadDelta: 20 },
+        { msg: "⚠️ Sudden Machine Shutdown! Load dropped drastically!", pvDelta: 0, loadDelta: -25 },
+        { msg: "☀️ Clear Sky! Maximum Solar Irradiance!", pvDelta: 20, loadDelta: 0 }
+    ];
+
+    const randomEvt = events[Math.floor(Math.random() * events.length)];
+    document.getElementById('gameEventBanner').innerHTML = randomEvt.msg;
+
+    // Laraskan slider irradiance / load secara automatik untuk beri cabaran kepada pemain
+    const loadSlider = document.getElementById('loadSlider');
+    const irrSlider = document.getElementById('irrSlider');
+
+    if (loadSlider && randomEvt.loadDelta !== 0) {
+        let newLoad = Math.max(10, Math.min(100, parseInt(loadSlider.value) + randomEvt.loadDelta));
+        loadSlider.value = newLoad;
+        loadSlider.dispatchEvent(new Event('input'));
+    }
+
+    if (irrSlider && randomEvt.pvDelta !== 0) {
+        let newIrr = Math.max(200, Math.min(1000, parseInt(irrSlider.value) + (randomEvt.pvDelta * 10)));
+        irrSlider.value = newIrr;
+        irrSlider.dispatchEvent(new Event('input'));
+    }
+}
+
+function checkZeroExportCompliance() {
+    // Ambil nilai Grid Power terkini dari UI / backend
+    const gridValElem = document.getElementById('flow-grid-val');
+    if (!gridValElem) return;
+
+    let gridValText = gridValElem.textContent || "0";
+    let gridPower = parseFloat(gridValText);
+
+    // Sekiranya terdapat EXPORT ke Grid (Nilai negatif atau status EXPORT)
+    const isExporting = gridValText.includes('EXPORT') || gridPower < -0.1;
+
+    if (isExporting) {
+        gameHealth -= 5;
+        gamePenalty += 100;
+        document.getElementById('gameEventBanner').className = "game-banner game-warning";
+        document.getElementById('gameEventBanner').innerHTML = "🚨 EXPORT DETECTED! Grid Penalty Applied (-RM100)!";
+    } else {
+        gameScore += 10;
+        document.getElementById('gameEventBanner').className = "game-banner";
+    }
+}
+
+function updateGameUI() {
+    document.getElementById('gameTimer').textContent = gameTimeLeft + "s";
+    document.getElementById('gameScore').textContent = gameScore;
+    document.getElementById('gameHealth').textContent = Math.max(0, gameHealth) + "%";
+    document.getElementById('gamePenalty').textContent = "RM " + gamePenalty;
+}
+
+function stopGame() {
+    clearInterval(gameInterval);
+    isGameRunning = false;
+    document.getElementById('startGameBtn').textContent = "▶️ Start Challenge";
+    document.getElementById('startGameBtn').style.background = "var(--primary-dark)";
+}
+
+function endGame() {
+    stopGame();
+    if (gameHealth > 0) {
+        alert(`🎉 CHALLENGE COMPLETED!\n\nFinal Score: ${gameScore}\nTotal Fines: RM ${gamePenalty}\nGrid Integrity: ${gameHealth}%`);
+    } else {
+        alert(`💥 GAME OVER!\n\nGrid Health depleted due to continuous Export violations.\nTotal Penalty: RM ${gamePenalty}`);
+    }
+}
